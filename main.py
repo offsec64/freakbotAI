@@ -141,4 +141,4 @@ async def kys(ctx):
     
 bot.run(api_key)
 
-#i love freaky bot ai
+#i love freaky bot ai....
