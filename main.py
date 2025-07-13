@@ -1,14 +1,21 @@
+import os
 import discord
-from discord.ext import commands
-from discord.ext import tasks
 import requests
 import xmltodict
 import datetime
+from dotenv import load_dotenv
+from discord.ext import commands
+from discord.ext import tasks
 from datetime import datetime, timedelta
 
-#API key retrevial from enviroment variable
+#Stores the time when the server first started up. Used in the !about command
+aboutTime = datetime.now()
 
-# Get steam info
+#API key retrevial from enviroment variable. Uses the python-dotenv library
+load_dotenv()
+api_key = os.getenv("API_KEY")
+
+# Get steam info in XML format
 STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
 
 def parse_xml_from_url_to_dict(STEAM_URL):
@@ -71,8 +78,7 @@ async def statuschange():
 
 @bot.command()
 async def about(ctx):
-    time = datetime.now()
-    await ctx.send('Synergizing Soy-Based Approaches to Suicide Mitigation Tactics Using Artificial Intelligence Since: ' + str(time))
+    await ctx.send('Synergizing Soy-Based Approaches to Suicide Mitigation Tactics Using Artificial Intelligence Since: ' + str(aboutTime))
 
 @bot.command()
 async def ukys(ctx):
@@ -133,6 +139,6 @@ async def kys(ctx):
     await ctx.send('**you\'re')
     
     
-bot.run('MTM5Mzc4Mjc2Njc0Njg2NTc3NA.GiXzL7.-DhbAVEJBWgpvY2FpXOJIJCOH81H1rPZigzk2g')
+bot.run(api_key)
 
 #i love freaky bot ai
