@@ -6,6 +6,8 @@ import xmltodict
 import datetime
 from datetime import datetime, timedelta
 
+#API key retrevial from enviroment variable
+
 # Get steam info
 STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
 
