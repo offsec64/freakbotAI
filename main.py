@@ -41,7 +41,7 @@ def send_ip_to_discord(ip):
     else:
         print("Channel not found. Is the bot connected?")
 
-@app.route("/ip", methods=["GET"])
+@app.route("/", methods=["GET"])
 def get_ip():
     forwarded = request.headers.get('X-Forwarded-For', request.remote_addr)
     ip = forwarded.split(',')[0].strip()
