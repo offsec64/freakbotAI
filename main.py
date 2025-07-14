@@ -1,3 +1,4 @@
+import json
 import os
 import discord
 import requests
@@ -31,13 +32,13 @@ STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
 # Initialize Flask app
 app = Flask(__name__)
 
-def send_ip_to_discord(ip, response):
+def send_ip_to_discord(ip, data):
     
     channel = bot.get_channel(int(DISCORD_CHANNEL_ID))
     if channel:
         # Use the bot's API to send the message
         asyncio.run_coroutine_threadsafe(
-            channel.send(f"New visitor IP: `{ip}` \n {response.json()["City"]},{response.json()["Region"]},{response.json()["Country"]}"),
+            channel.send(f"New visitor IP: `{ip}` \n {data["location"]["city"]}"),
             bot.loop
         )
     else:
@@ -48,7 +49,8 @@ def get_ip():
     forwarded = request.headers.get('X-Forwarded-For', request.remote_addr)
     ip = forwarded.split(',')[0].strip()
     response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
-    send_ip_to_discord(ip, response)
+    data = json.loads(response)
+    send_ip_to_discord(ip, data)
     return jsonify({"ip": ip})
 
 def run_flask():
