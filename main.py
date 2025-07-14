@@ -19,6 +19,7 @@ aboutTime = datetime.now()
 #API key retrevial from enviroment variable. Uses the python-dotenv library
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
+ABSTRACT_API_KEY = os.getenv("ABSTRACT_API_KEY")
 DISCORD_CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID")
 OUTSIDE_PORT = os.getenv("OUTSIDE_PORT")
 
@@ -30,12 +31,13 @@ STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
 # Initialize Flask app
 app = Flask(__name__)
 
-def send_ip_to_discord(ip):
+def send_ip_to_discord(ip, response):
+    
     channel = bot.get_channel(int(DISCORD_CHANNEL_ID))
     if channel:
         # Use the bot's API to send the message
         asyncio.run_coroutine_threadsafe(
-            channel.send(f"New visitor IP: `{ip}`"),
+            channel.send(f"New visitor IP: `{ip}` \n {response.content}"),
             bot.loop
         )
     else:
@@ -45,7 +47,8 @@ def send_ip_to_discord(ip):
 def get_ip():
     forwarded = request.headers.get('X-Forwarded-For', request.remote_addr)
     ip = forwarded.split(',')[0].strip()
-    send_ip_to_discord(ip)
+    response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
+    send_ip_to_discord(ip, response)
     return jsonify({"ip": ip})
 
 def run_flask():
