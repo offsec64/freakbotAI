@@ -36,10 +36,18 @@ def send_ip_to_discord(ip, data):
     
     channel = bot.get_channel(int(DISCORD_CHANNEL_ID))
     if channel:
+        embed = discord.Embed(title="New Visitor IP",
+                              description=f"IP: `{ip}`",
+                              colour=0x00ff00)
+        embed.add_field(name="Location", 
+                        value=f"{data['location']['city']}, {data['location']['region']}, Country: {data['location']['country']} {data['flag']['emoji']}", 
+                        inline=False)
+        
         # Use the bot's API to send the message
         asyncio.run_coroutine_threadsafe(
             # Format the message with the IP and location data
-            channel.send(f"New visitor IP: `{ip}`\n{data["location"]["city"]}, {data["location"]["region"]}\nCountry: {data["location"]["country"]} {data["flag"]["emoji"]}\nIs VPN: {data["security"]["is_vpn"]}\nIs Proxy: {data["security"]["is_proxy"]}\nIs Tor: {data["security"]["is_tor"]}\nIs Mobile: {data["security"]["is_mobile"]}\nLatitude: {data["location"]["latitude"]}\nLongitude: {data["location"]["longitude"]}"),
+            channel.send(embed=embed),
+            #channel.send(f"New visitor IP: `{ip}`\n{data["location"]["city"]}, {data["location"]["region"]}\nCountry: {data["location"]["country"]} {data["flag"]["emoji"]}\nIs VPN: {data["security"]["is_vpn"]}\nIs Proxy: {data["security"]["is_proxy"]}\nIs Tor: {data["security"]["is_tor"]}\nIs Mobile: {data["security"]["is_mobile"]}\nLatitude: {data["location"]["latitude"]}\nLongitude: {data["location"]["longitude"]}"),
             bot.loop
         )
     else:
