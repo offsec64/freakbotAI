@@ -120,7 +120,7 @@ async def steam(ctx):
 
 @bot.command()
 async def goon(ctx):
-  await ctx.send('MESSAGE TO SEND')
+  await ctx.send('GoonTech(TM) is a leading provider of innovative solutions for the modern world. Our mission is to empower individuals and organizations with cutting-edge technology that enhances productivity, creativity, and connectivity. From AI-driven applications to advanced robotics, GoonTech(TM) is at the forefront of technological advancement, delivering products and services that redefine the boundaries of what is possible. Join us in shaping the future with GoonTech(TM), where innovation meets excellence. (that was what the inline autocomplete gave me in vs code lmao bruh)')
 
 @bot.command()
 async def vrchathours(ctx):
