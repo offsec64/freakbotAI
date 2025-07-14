@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Test</title>
+    <title>Goon</title>
     <style>
       body {
         background-color: #111;
         color: #0f0;
         font-family: monospace;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         height: 100vh;
@@ -15,10 +16,45 @@
       }
       h1 {
         font-size: 5rem;
+        margin-bottom: 2rem;
+      }
+      button {
+        padding: 1rem 2rem;
+        font-size: 1.2rem;
+        background-color: #0f0;
+        color: #111;
+        border: none;
+        cursor: pointer;
+        font-family: monospace;
+      }
+      #ipDisplay {
+        margin-top: 2rem;
+        font-size: 1.2rem;
+        color: #0f0;
       }
     </style>
   </head>
   <body>
-    <h1>itsnotfridayet.tech</h1>
+    <h1>Goon</h1>
+    <button onclick="revealIP()">Reveal My IP</button>
+    <div id="ipDisplay"></div>
+
+    <script>
+      async function revealIP() {
+        try {
+          const res = await fetch('/reveal', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          const data = await res.json();
+          document.getElementById('ipDisplay').textContent = `Your IP is: ${data.ip}`;
+        } catch (err) {
+          document.getElementById('ipDisplay').textContent = 'Error retrieving IP.';
+        }
+      }
+    </script>
   </body>
 </html>
+  

