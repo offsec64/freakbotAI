@@ -11,6 +11,8 @@ from discord.ext import commands
 from discord.ext import tasks
 from datetime import datetime, timedelta
 
+# -------- Variables --------
+
 #Stores the time when the server first started up. Used in the !about command
 aboutTime = datetime.now()
 
@@ -22,6 +24,8 @@ OUTSIDE_PORT = os.getenv("OUTSIDE_PORT")
 
 # Get steam info in XML format
 STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
+
+# -------- IP Grabber --------
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -47,6 +51,7 @@ def get_ip():
 def run_flask():
     app.run(host='0.0.0.0', port=OUTSIDE_PORT)
 
+# -------- XML Parsing --------
 
 def parse_xml_from_url_to_dict(STEAM_URL):
     """
@@ -90,6 +95,7 @@ if parsed_data:
 else:
     print("Failed to parse XML from URL.")
 
+# -------- Discord Bot --------
 
 intents = discord.Intents.all()
 
@@ -167,8 +173,6 @@ async def kys(ctx):
     await bot.change_presence(status=discord.Status.offline, activity=discord.Activity(type=discord.ActivityType.listening, name="synergy"))
     await ctx.send('um what the flip man...... if youre happy then im happy i guess :((((((')
     await ctx.send('**you\'re')
-
-#IP grabber shit
 
 
 # Run the bot
