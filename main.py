@@ -49,7 +49,7 @@ def get_ip():
     forwarded = request.headers.get('X-Forwarded-For', request.remote_addr)
     ip = forwarded.split(',')[0].strip()
     response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
-    data = json.loads(response)
+    data = json.loads(response.text)
     send_ip_to_discord(ip, data)
     return jsonify({"ip": ip})
 
