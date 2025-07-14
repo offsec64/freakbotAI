@@ -61,8 +61,10 @@ def send_ip_to_discord(ip, data):
                         value=f"Latitude: {data['location']['latitude']}\n"
                               f"Longitude: {data['location']['longitude']}",
                         inline=False)
-        embed.set_thumbnail(url=data['flag']['png'])
         
+        embed.set_thumbnail(url=data['flag']['png'])
+        embed.set_author(name="IP Intelligence", icon_url="https://www.abstractapi.com/favicon.ico")
+
         asyncio.run_coroutine_threadsafe(
             # This is the coroutine that sends the embed message to the Discord channel
             channel.send(embed=embed),
