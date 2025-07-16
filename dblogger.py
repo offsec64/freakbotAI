@@ -76,7 +76,7 @@ if mydb.is_connected():
     mycursor.execute(sql, val)
     mydb.commit()
 
-    mycursor.execute("SELECT * FROM steamhours")
+    mycursor.execute("SELECT * FROM steam_data")
 
     myresult = mycursor.fetchall()
 
