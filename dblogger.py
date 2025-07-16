@@ -7,7 +7,7 @@ DB_USERNAME = os.getenv("DB_USERNAME")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 mydb = mysql.connector.connect(
-    host="localhost",
+    host="10.10.10.9",
     user=DB_USERNAME,
     password=DB_PASSWORD,
     database="goontech"
