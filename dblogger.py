@@ -1,3 +1,6 @@
+#Logs a Steam user's hours in their most played game to a MySQL database
+#Use cron (unix) or task scheduler (win) to run this script periodically, idealy every 24 hours.
+
 import mysql.connector
 import os
 import requests
@@ -45,8 +48,8 @@ def parse_xml_from_url_to_dict(STEAM_URL):
 parsed_data = parse_xml_from_url_to_dict(STEAM_URL)
 
 if parsed_data:
-    print("Successfully parsed XML into dictionary:")
-    print(parsed_data)
+    print("Successfully parsed XML into dictionary")
+    #print(parsed_data)
 else:
     print("Failed to parse XML from URL.")
 
@@ -70,8 +73,11 @@ if mydb.is_connected():
 
     steam_id = parsed_data["profile"]["steamID64"]
 
+    current_time = datetime.now()
+    formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+
     sql="INSERT INTO steam_data (steamid, game_name, hours, timestamp) VALUES (%s, %s, %s, %s)"
-    val= (steam_id, game_name, hours, datetime.now())
+    val= (steam_id, game_name, hours, formatted_time)
 
     mycursor.execute(sql, val)
     mydb.commit()
