@@ -62,9 +62,10 @@ def send_ip_to_discord(ip, data):
                               f"Longitude: {data['location']['longitude']}",
                         inline=False)
         
-        embed.set_thumbnail(url=data['flag']['png'])
         embed.set_author(name="IP Intelligence", icon_url="https://cdn.prod.website-files.com/65166126ca18241731aa26b0/65390de624cb65770560dda5_FAV.png")
 
+        embed.set_footer(text="FreakBotAI")
+        
         asyncio.run_coroutine_threadsafe(
             # This is the coroutine that sends the embed message to the Discord channel
             channel.send(embed=embed),
