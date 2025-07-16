@@ -4,4 +4,6 @@ API_KEY - Discord API key
 ABSTRACT_API_KEY - API key for the Abstract API  
 DISCORD_CHANNEL_ID - Channel ID for the bot to post IP messages in  
 OUTSIDE_PORT - Port for the web server  
+DB_USERNAME - Username to access database  
+DB_PASSWORD - Password to access database  
 
