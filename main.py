@@ -15,6 +15,8 @@ from datetime import datetime, timedelta
 #Stores the time when the server first started up. Used in the !about command
 aboutTime = datetime.now()
 
+client = discord.Client()
+
 #API key retrevial from enviroment variable. Uses the python-dotenv library
 load_dotenv()
 
