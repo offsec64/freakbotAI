@@ -30,7 +30,7 @@ def send_ip_to_discord(ip, data):
         "color": 65280,  # green
         "fields": [
             {"name": "IP Address", "value": f"{data['location']['city']}, {data['location']['region']}, {data['location']['country']} {data['flag']['emoji']}", "inline": False},
-            {"name": "Timestamp", "value": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"), "inline": False}
+            {"name": "Timestamp", "value": datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC"), "inline": False}
         ]
     }
 
