@@ -28,6 +28,8 @@ STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
 
 # ------- Database Connection --------
 
+
+
 mydb = mysql.connector.connect(
     host=DB_HOST,
     user=DB_USERNAME,
@@ -37,8 +39,25 @@ mydb = mysql.connector.connect(
 
 if mydb.is_connected():
     print("Connected to the database successfully!")
+    mycursor = mydb.cursor()
+
+    # Selects the most recent entry from the steam_data table
+    mycursor.execute("SELECT * FROM `steam_data` ORDER BY `timestamp` DESC LIMIT 1")
+    result = mycursor.fetchall()
+
+    if result:
+        print("Most recent entry in steam_data:")
+        for row in result:
+            print(row) 
+    else:
+        print("No entries found in steam_data table.")
+
+    mycursor.close()
+    mydb.close()
+
 else:
     print("Failed to connect to the database.")
+    mydb.close()
 
 # -------- XML Parsing --------
 
