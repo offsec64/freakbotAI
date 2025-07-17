@@ -5,6 +5,7 @@ import json
 import datetime
 from datetime import datetime
 from dotenv import load_dotenv
+from user_agents import parse as parse_ua
 
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
@@ -18,7 +19,7 @@ app = Flask(__name__)
 DISCORD_BOT_TOKEN = API_KEY
 DISCORD_CHANNEL_ID = DISCORD_CHANNEL_ID
 
-def send_ip_to_discord(ip, data):
+def send_ip_to_discord(ip, data, user_agent_raw, method):
     url = f"https://discord.com/api/v10/channels/{DISCORD_CHANNEL_ID}/messages"
     headers = {
         "Authorization": f"Bot {DISCORD_BOT_TOKEN}",
@@ -27,11 +28,18 @@ def send_ip_to_discord(ip, data):
 
     current_time = datetime.now()
 
+    # Parse user agent string
+    ua = parse_ua(user_agent_raw or "")
+
+    device_type = "Mobile" if ua.is_mobile else "Tablet" if ua.is_tablet else "PC" if ua.is_pc else "Other"
+    os_info = f"{ua.os.family} {ua.os.version_string}"
+    browser_info = f"{ua.browser.family} {ua.browser.version_string}"
+
     embed = {
         "title": "New Visitor",
         "description": f"IP Address: `{ip}`",
         "color": 65280,  # green
-        "Author": [
+        "author": [
             {"name": "Abstract IP Intelligence", "icon_url": "https://cdn.prod.website-files.com/65166126ca18241731aa26b0/65390de624cb65770560dda5_FAV.png"}
         ],
         "fields": [
@@ -57,14 +65,16 @@ def render_page():
 @app.route("/reveal", methods=["POST"])
 def reveal_ip():
 
-    forwarded = request.headers.get('X-Forwarded-For', request.remote_addr)
-    ip = forwarded.split(',')[0].strip()
+    forwarded = request.headers.get("X-Forwarded-For", request.remote_addr)
+    ip = forwarded.split(",")[0].strip()
+    user_agent = request.headers.get("User-Agent")
+    method = request.method
 
     # Make a request to the Abstract API to get IP intelligence data and parse the response
     response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
     data = json.loads(response.text)
 
-    send_ip_to_discord(ip, data)
+    send_ip_to_discord(ip, data, user_agent, method)
 
     #return response.json()  # Return the JSON response directly from the Abstract API
     return jsonify({"ip": ip})
