@@ -159,8 +159,8 @@ async def vrchathours(ctx):
         most_played_game = row[2]
         hours = row[3]
         timestamp = row[4]
-        result = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC"
-    await channel.send(result)
+        msg = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC"
+    await channel.send(msg)
 
 # -------- Silly commands --------
 
