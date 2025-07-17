@@ -48,7 +48,7 @@ if mydb.is_connected():
     if result:
         print("Most recent entry in steam_data:")
         for row in result:
-            print(row[3] + " - " + row[4])  # Assuming the 4th and 5th columns are the relevant data
+            print(row[3] + " Hours @ " + row[4] + " UTC")  # Assuming the 4th and 5th columns are the relevant data
     else:
         print("No entries found in steam_data table.")
 
@@ -155,6 +155,11 @@ async def steam(ctx):
 @bot.command()
 async def vrchathours(ctx):
     channel = bot.get_channel(1393808557257789471)
+    for row in result:
+        most_played_game = row[2]
+        hours = row[3]
+        timestamp = row[4]
+        result = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC"
     await channel.send(result)
 
 # -------- Silly commands --------
