@@ -168,7 +168,7 @@ async def vrchathours(ctx):
     # Request body
     data = {
         "model": "gemma3:12b",  # the model you pulled and want to use
-        "prompt": "You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: 'Most recent VRChat hours: 4092 Logged at 2025-07-17 20:00:01 UTC'. Make a snarky one-liner about it. Be creative and savage.",
+        "prompt": f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{msg}'. Make a snarky one-liner about it. Be creative and savage.",
         "temperature": 1.9,        # High creativity
         "repeat_penalty": 1.8,     # Penalize repetition (1.0 = no penalty)
         "top_p": 0.8,           # Top-p sampling (0.0 = no top-p)
