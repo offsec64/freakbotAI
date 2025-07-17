@@ -4,9 +4,6 @@ import discord
 import requests
 import xmltodict
 import datetime
-import threading
-import asyncio
-from flask import Flask, request, jsonify, render_template
 from dotenv import load_dotenv
 from discord.ext import commands
 from discord.ext import tasks
@@ -63,7 +60,7 @@ xml_url = STEAM_URL # Example URL
 parsed_data = parse_xml_from_url_to_dict(xml_url)
 
 if parsed_data:
-    print("Successfully parsed XML into dictionary:")
+    print("Successfully parsed Steam XML into dictionary!")
     #print(parsed_data)
 else:
     print("Failed to parse XML from URL.")

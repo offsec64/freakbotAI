@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 #Logs a Steam user's hours in their most played game to a MySQL database
 #Use cron (unix) or task scheduler (win) to run this script periodically, idealy every 24 hours.
 
