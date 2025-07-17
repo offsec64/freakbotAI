@@ -195,8 +195,30 @@ async def about(ctx):
 
 @bot.command()
 async def goon(ctx):
-  await ctx.send('GoonTech(TM) is a leading provider of innovative solutions for the modern world. Our mission is to empower individuals and organizations with cutting-edge technology that enhances productivity, creativity, and connectivity. From AI-driven applications to advanced robotics, GoonTech(TM) is at the forefront of technological advancement, delivering products and services that redefine the boundaries of what is possible. Join us in shaping the future with GoonTech(TM), where innovation meets excellence. (that was what the inline autocomplete gave me in vs code lmao bruh)')
+  
+    # Ollama API endpoint
+    url = "http://10.10.10.81:80/api/generate"
 
+    # Request body
+    data = {
+        "model": "gemma3:12b",  # model to use 
+        "prompt": "Write a polished, professional company overview for a fictional technology brand called GoonTech™. Use corporate buzzwords and a visionary tone. The company should sound innovative, futuristic, and confident. Focus on areas like AI, robotics, connectivity, and productivity. Make it sound like something you’d read in a press release, investor deck, or tech product website. Keep it under 100 words.",
+        "temperature": 1.9,        # High creativity
+        "repeat_penalty": 1.8,     # Penalize repetition (1.0 = no penalty)
+        "top_p": 0.8,           # Top-p sampling (0.0 = no top-p)
+        "stream": False  # Set to True if you want streaming responses
+    }
+
+    llmResponse = requests.post(url, json=data)
+
+    # Check for success
+    if llmResponse.status_code == 200:
+        print(llmResponse.json()["response"])
+    else:
+        print("Error:", llmResponse.status_code, llmResponse.text)
+
+   # await ctx.send('GoonTech(TM) is a leading provider of innovative solutions for the modern world. Our mission is to empower individuals and organizations with cutting-edge technology that enhances productivity, creativity, and connectivity. From AI-driven applications to advanced robotics, GoonTech(TM) is at the forefront of technological advancement, delivering products and services that redefine the boundaries of what is possible. Join us in shaping the future with GoonTech(TM), where innovation meets excellence. (that was what the inline autocomplete gave me in vs code lmao bruh)')
+    await ctx.send(f"**{llmResponse.json()['response']}**")
 @bot.command()
 async def kys(ctx):
     await bot.change_presence(status=discord.Status.offline, activity=discord.Activity(type=discord.ActivityType.listening, name="synergy"))
