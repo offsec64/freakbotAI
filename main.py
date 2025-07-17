@@ -162,7 +162,7 @@ async def vrchathours(ctx):
         timestamp = row[4]
         msg = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC"
 
-        # Ollama API endpoint
+    # Ollama API endpoint
     url = "http://10.10.10.81:80/api/generate"
 
     # Request body
@@ -183,6 +183,7 @@ async def vrchathours(ctx):
     else:
         print("Error:", llmResponse.status_code, llmResponse.text)
 
+    await channel.send(f"**{msg}**")
     await channel.send(llmResponse.json()["response"])
 
 # -------- Silly commands --------
