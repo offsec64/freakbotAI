@@ -48,7 +48,7 @@ if mydb.is_connected():
     if result:
         print("Most recent entry in steam_data:")
         for row in result:
-            print(row) 
+            print(row[3] + " - " + row[4])  # Assuming the 4th and 5th columns are the relevant data
     else:
         print("No entries found in steam_data table.")
 
