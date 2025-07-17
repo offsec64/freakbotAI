@@ -5,7 +5,7 @@
 2. Create and populate a .env file as described in the *Enviroment Setup* section
 3. Run `pip install -r requirements.txt` to install all the necessary project dependencies
 4. Run `python3 (insert script name here).py` to start the desired script. Script functionality details listed in the *Files* section.
-5. (Optional) Run `crontab -e` and add the line `0 * * * * /usr/bin/python3 /path/to/script/dblog.py` to the end of the file. This will tell cron to execute the database logging script once per hour.
+5. (Optional) Run `crontab -e` and add the line `0 * * * * /path-to-venv/venv/bin/python3 /path/to/script/dblog.py` to the end of the file. This will tell cron to execute the database logging script once per hour.
 
 ### Enviroment Setup:
 This project requires a .env file in the root directory with the following key/value pairs:  
