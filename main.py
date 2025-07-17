@@ -153,7 +153,6 @@ async def kys(ctx):
 
 # Run the bot
 if __name__ == "__main__":
-    threading.Thread(target=run_flask, daemon=True).start()
     bot.run(API_KEY)
 
 #i love freaky bot ai....
