@@ -28,7 +28,7 @@ STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
 
 # ------- Database Connection --------
 
-
+result = None
 
 mydb = mysql.connector.connect(
     host=DB_HOST,
@@ -155,11 +155,7 @@ async def steam(ctx):
 @bot.command()
 async def vrchathours(ctx):
     channel = bot.get_channel(1393808557257789471)
-    s=parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["hoursOnRecord"]
-    s = s.replace(",", "")
-    await channel.send(s)
-    a=datetime.now()
-    await channel.send(int(a.strftime('%Y%m%d')))
+    await channel.send(result)
 
 # -------- Silly commands --------
 
