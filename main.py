@@ -152,7 +152,7 @@ async def steam(ctx):
 
     await ctx.send(embed=embed)
 
-#i want to make this eventually send the parsed data to a local LLM to have it generate a funny message about how much time has been spent on VRChat
+#Sends the most recent VRChat hours played to a locally hosted LLM API and posts the response to a Discord channel
 @bot.command()
 async def vrchathours(ctx):
     channel = bot.get_channel(1393808557257789471)
@@ -167,8 +167,8 @@ async def vrchathours(ctx):
 
     # Request body
     data = {
-        "model": "gemma3:12b",  # the model you pulled and want to use
-        "prompt": f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{msg}'. Make a snarky one-liner about it. Be creative and savage.",
+        "model": "gemma3:12b",  # model to use 
+        "prompt": f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{msg}'. Make a snarky one-liner about it. Be creative and savage. Please refer to this person as Henry-sama",
         "temperature": 1.9,        # High creativity
         "repeat_penalty": 1.8,     # Penalize repetition (1.0 = no penalty)
         "top_p": 0.8,           # Top-p sampling (0.0 = no top-p)
@@ -183,6 +183,7 @@ async def vrchathours(ctx):
     else:
         print("Error:", llmResponse.status_code, llmResponse.text)
 
+    # Send the message to the channel
     await channel.send(f"**{msg}**")
     await channel.send(llmResponse.json()["response"])
 
