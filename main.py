@@ -152,6 +152,7 @@ async def steam(ctx):
 
     await ctx.send(embed=embed)
 
+#i want to make this eventually send the parsed data to a local LLM to have it generate a funny message about how much time has been spent on VRChat
 @bot.command()
 async def vrchathours(ctx):
     channel = bot.get_channel(1393808557257789471)
