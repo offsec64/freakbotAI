@@ -8,13 +8,10 @@ from dotenv import load_dotenv
 from user_agents import parse as parse_ua
 
 load_dotenv()
-API_KEY = os.getenv("API_KEY")
+DISCORD_BOT_TOKEN = os.getenv("API_KEY")
 DISCORD_CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID")
 OUTSIDE_PORT = os.getenv("OUTSIDE_PORT")
 ABSTRACT_API_KEY = os.getenv("ABSTRACT_API_KEY")
-
-DISCORD_BOT_TOKEN = API_KEY
-DISCORD_CHANNEL_ID = DISCORD_CHANNEL_ID
 
 app = Flask(__name__)
 
