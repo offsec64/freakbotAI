@@ -187,6 +187,11 @@ async def vrchathours(ctx):
     await channel.send(f"**{msg}**")
     await channel.send(llmResponse.json()["response"])
 
+@client.event
+async def on_message(message):
+    if message.content.contains("@FreakBotAI"):
+        await message.channel.send("I love freaky bot ai too! It's so fun to play with AI and see what it can do! :D (test messsage)")
+
 # -------- Silly commands --------
 
 @bot.command()
