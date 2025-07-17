@@ -13,4 +13,5 @@ Requires a .env file in the root directory with the following key/value pairs:
 - **dblog.py** - Database logging tool. Retreives data from Steam and adds it to a mySQL database. Use cron in the prod enviroment to run every hour.
 - **iplog.py** - IP Address logging tool. Hosts a Flask web server with IP grabber funtionality and logs to Discord server.
 - **main.py** - Contains main bot functionality.
+- **templates/index.html** - Webpage hosted by iplog.py
 
