@@ -40,7 +40,7 @@ def send_ip_to_discord(ip, data, user_agent_raw, method):
         "description": f"IP Address: `{ip}`",
         "color": 65280,  # green
         "author": {
-            "name": "Author Name",
+            "name": "Abstract IP Intelligence",
             "url": "https://www.abstractapi.com/",
             "icon_url": "https://cdn.prod.website-files.com/65166126ca18241731aa26b0/65390de624cb65770560dda5_FAV.png"
         },
