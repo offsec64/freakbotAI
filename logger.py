@@ -24,13 +24,15 @@ def send_ip_to_discord(ip, data):
         "Content-Type": "application/json"
     }
 
+    current_time = datetime.now()
+
     embed = {
         "title": "New Visitor",
         "description": "IP Address: " + ip,
         "color": 65280,  # green
         "fields": [
             {"name": "IP Address", "value": f"{data['location']['city']}, {data['location']['region']}, {data['location']['country']} {data['flag']['emoji']}", "inline": False},
-            {"name": "Timestamp", "value": datetime.now().strftime("%Y-%m-%d %H:%M:%S UTC"), "inline": False}
+            {"name": "Timestamp", "value": current_time.strftime("%Y-%m-%d %H:%M:%S UTC"), "inline": False}
         ]
     }
 
