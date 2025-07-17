@@ -131,7 +131,7 @@ async def vrchathours(ctx):
 
 # -------- Silly commands --------
 
-bot.command()
+@bot.command()
 async def about(ctx):
     await ctx.send('Synergizing Soy-Based Approaches to Suicide Mitigation Tactics Using Artificial Intelligence Since: ' + str(aboutTime))
 
