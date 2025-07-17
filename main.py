@@ -67,7 +67,7 @@ parsed_data = parse_xml_from_url_to_dict(xml_url)
 
 if parsed_data:
     print("Successfully parsed XML into dictionary:")
-    print(parsed_data)
+    #print(parsed_data)
 else:
     print("Failed to parse XML from URL.")
 
@@ -87,16 +87,6 @@ async def on_ready():
 @discord.ext.tasks.loop(minutes=1)
 async def statuschange():
     await bot.change_presence(status=discord.Status.online, activity=discord.CustomActivity(name=corpobs.json()["phrase"]))
-
-@bot.command()
-async def about(ctx):
-    await ctx.send('Synergizing Soy-Based Approaches to Suicide Mitigation Tactics Using Artificial Intelligence Since: ' + str(aboutTime))
-
-@bot.command()
-async def ukys(ctx):
-    
-    await bot.change_presence(status=discord.Status.do_not_disturb, activity=discord.CustomActivity(name=corpobs.json()["phrase"]))
-    await ctx.send('fuck you then')
 
 @bot.command()
 async def steam(ctx):
@@ -131,10 +121,6 @@ async def steam(ctx):
     await ctx.send(embed=embed)
 
 @bot.command()
-async def goon(ctx):
-  await ctx.send('GoonTech(TM) is a leading provider of innovative solutions for the modern world. Our mission is to empower individuals and organizations with cutting-edge technology that enhances productivity, creativity, and connectivity. From AI-driven applications to advanced robotics, GoonTech(TM) is at the forefront of technological advancement, delivering products and services that redefine the boundaries of what is possible. Join us in shaping the future with GoonTech(TM), where innovation meets excellence. (that was what the inline autocomplete gave me in vs code lmao bruh)')
-
-@bot.command()
 async def vrchathours(ctx):
     channel = bot.get_channel(1393808557257789471)
     s=parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["hoursOnRecord"]
@@ -143,6 +129,15 @@ async def vrchathours(ctx):
     a=datetime.now()
     await channel.send(int(a.strftime('%Y%m%d')))
 
+# -------- Silly commands --------
+
+bot.command()
+async def about(ctx):
+    await ctx.send('Synergizing Soy-Based Approaches to Suicide Mitigation Tactics Using Artificial Intelligence Since: ' + str(aboutTime))
+
+@bot.command()
+async def goon(ctx):
+  await ctx.send('GoonTech(TM) is a leading provider of innovative solutions for the modern world. Our mission is to empower individuals and organizations with cutting-edge technology that enhances productivity, creativity, and connectivity. From AI-driven applications to advanced robotics, GoonTech(TM) is at the forefront of technological advancement, delivering products and services that redefine the boundaries of what is possible. Join us in shaping the future with GoonTech(TM), where innovation meets excellence. (that was what the inline autocomplete gave me in vs code lmao bruh)')
 
 @bot.command()
 async def kys(ctx):
@@ -150,9 +145,15 @@ async def kys(ctx):
     await ctx.send('um what the flip man...... if youre happy then im happy i guess :((((((')
     await ctx.send('**you\'re')
 
+@bot.command()
+async def ukys(ctx):
+    
+    await bot.change_presence(status=discord.Status.do_not_disturb, activity=discord.CustomActivity(name=corpobs.json()["phrase"]))
+    await ctx.send('screw you then buddy')
 
-# Run the bot
+# Runs the bot
 if __name__ == "__main__":
     bot.run(API_KEY)
 
 #i love freaky bot ai....
+#2025 goonsoft.dev
