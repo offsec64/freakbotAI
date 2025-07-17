@@ -20,9 +20,6 @@ aboutTime = datetime.now()
 #API key retrevial from enviroment variable. Uses the python-dotenv library
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
-ABSTRACT_API_KEY = os.getenv("ABSTRACT_API_KEY")
-DISCORD_CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID")
-OUTSIDE_PORT = os.getenv("OUTSIDE_PORT")
 
 # Get steam info in XML format
 STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
