@@ -162,7 +162,7 @@ async def vrchathours(ctx):
 
         a = int(hours) / 4
         b = int(a) / 52
-        msg = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC\nOn average, that's {b} hours per week for 4 years! You couldve gotten a degree with that much time!"
+        msg = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC\nOn average, that's about {int(b)} hours per week for 4 years! You could've gotten a degree with that much time!"
     await channel.send(msg)
 
 # -------- Silly commands --------
