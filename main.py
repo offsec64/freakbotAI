@@ -160,11 +160,30 @@ async def vrchathours(ctx):
         most_played_game = row[2]
         hours = row[3]
         timestamp = row[4]
+        msg = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC"
 
-        a = int(hours) / 4
-        b = int(a) / 52
-        msg = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC\nOn average, that's about {int(b)} hours per week for 4 years! You could've gotten a degree with that much time!"
-    await channel.send(msg)
+        # Ollama API endpoint
+    url = "http://10.10.10.81:80/api/generate"
+
+    # Request body
+    data = {
+        "model": "gemma3:12b",  # the model you pulled and want to use
+        "prompt": "You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: 'Most recent VRChat hours: 4092 Logged at 2025-07-17 20:00:01 UTC'. Make a snarky one-liner about it. Be creative and savage.",
+        "temperature": 1.9,        # High creativity
+        "repeat_penalty": 1.8,     # Penalize repetition (1.0 = no penalty)
+        "top_p": 0.8,           # Top-p sampling (0.0 = no top-p)
+        "stream": False  # Set to True if you want streaming responses
+    }
+
+    llmResponse = requests.post(url, json=data)
+
+    # Check for success
+    if llmResponse.status_code == 200:
+        print(llmResponse.json()["response"])
+    else:
+        print("Error:", llmResponse.status_code, llmResponse.text)
+
+    await channel.send(llmResponse.json()["response"])
 
 # -------- Silly commands --------
 
