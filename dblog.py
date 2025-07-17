@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 load_dotenv(override=True)
 DB_USERNAME = os.getenv("DB_USERNAME")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
 
 STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
 
@@ -56,7 +57,7 @@ else:
     print("Failed to parse XML from URL.")
 
 mydb = mysql.connector.connect(
-    host="10.10.10.9",
+    host=DB_HOST,
     user=DB_USERNAME,
     password=DB_PASSWORD,
     database="goontech"

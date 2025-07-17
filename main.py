@@ -4,6 +4,7 @@ import discord
 import requests
 import xmltodict
 import datetime
+import mysql.connector
 from dotenv import load_dotenv
 from discord.ext import commands
 from discord.ext import tasks
@@ -16,10 +17,28 @@ aboutTime = datetime.now()
 
 #API key retrevial from enviroment variable. Uses the python-dotenv library
 load_dotenv()
-API_KEY = os.getenv("API_KEY")
+
+DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+DB_USERNAME = os.getenv("DB_USERNAME")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
+DB_HOST = os.getenv("DB_HOST")
 
 # Get steam info in XML format
 STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
+
+# ------- Database Connection --------
+
+mydb = mysql.connector.connect(
+    host=DB_HOST,
+    user=DB_USERNAME,
+    password=DB_PASSWORD,
+    database="goontech"
+)
+
+if mydb.is_connected():
+    print("Connected to the database successfully!")
+else:
+    print("Failed to connect to the database.")
 
 # -------- XML Parsing --------
 
@@ -147,7 +166,7 @@ async def ukys(ctx):
 
 # Runs the bot
 if __name__ == "__main__":
-    bot.run(API_KEY)
+    bot.run(DISCORD_BOT_TOKEN)
 
 #i love freaky bot ai....
 #2025 goonsoft.dev
