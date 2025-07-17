@@ -29,10 +29,11 @@ def send_ip_to_discord(ip, data):
 
     embed = {
         "title": "New Visitor",
-        "description": "IP Address: `{ip}`",
+        "description": f"IP Address: `{ip}`",
         "color": 65280,  # green
         "fields": [
             {"name": "Approximate Location", "value": f"{data['location']['city']}, {data['location']['region']}, {data['location']['country']} {data['flag']['emoji']}", "inline": False},
+            {"name": "Service Provider", "value": f"ISP: {data['company']['name']}\n"f"Domain: {data['company']['domain']}", "inline": False},
             {"name": "Timestamp", "value": current_time.strftime("%Y-%m-%d %H:%M:%S UTC"), "inline": False}
         ]
     }
