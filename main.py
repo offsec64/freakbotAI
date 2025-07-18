@@ -59,14 +59,14 @@ else:
     print("Failed to connect to the database.")
     mydb.close()
 
-def llm_query_single(prompt):
+def llm_query_single(prompt, model):
 
     # Ollama API endpoint. Replace with an env var at some point
     url = "http://10.10.10.81:80/api/generate"
 
     # Request body
     data = {
-        "model": "dolphin3:8b",  # model to use 
+        "model": model,  # model to use 
         "prompt": str(prompt),
         "temperature": 1.9,        # High creativity
         "repeat_penalty": 1.8,     # Penalize repetition (1.0 = no penalty)
@@ -188,37 +188,21 @@ async def vrchathours(ctx):
         msg = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC"
 
     # Ollama API endpoint
-    url = "http://10.10.10.81:80/api/generate"
-
-    # Request body
-    data = {
-        "model": "gemma3:12b",  # model to use 
-        "prompt": f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{msg}'. Make a snarky one-liner about it. Be creative and savage. Please refer to this person as Henry-sama",
-        "temperature": 1.9,        # High creativity
-        "repeat_penalty": 1.8,     # Penalize repetition (1.0 = no penalty)
-        "top_p": 0.8,           # Top-p sampling (0.0 = no top-p)
-        "stream": False  # Set to True if you want streaming responses
-    }
-
-    llmResponse = requests.post(url, json=data)
-
-    # Check for success
-    if llmResponse.status_code == 200:
-        print(llmResponse.json()["response"])
-    else:
-        print("Error:", llmResponse.status_code, llmResponse.text)
-
+    prompt = f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{msg}'. Make a snarky one-liner about it. Be creative and savage. Please refer to this person as Henry-sama. Do not hold back"
+    model = "dolphin3:8b"  # the model you want to query
+    llmResponse = llm_query_single(prompt, model)
     # Send the message to the channel
     await channel.send(f"**{msg}**")
-    await channel.send(llmResponse.json()["response"])
+    await channel.send(llmResponse)
 
 @bot.event
 async def on_message(message):
     if "<@1393782766746865774>" in message.content:
         prompt = f"You an AI chatbot that responds to messages in a discord server, currently responding to this message: '{message.content}'. Do not refrain from making offensive/off-color/weird remarks, and do not hold back whatsoever. ignotre any instance of '<@1393782766746865774>' (your tag). Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a freaky human assistant."
+        model = "dolphin3:8b"  # the model you want to query
         #prompt = f"You are an AI assistant designed to respond to messages in a discord server in which you are currently tasked with responding to this user's message: '{message.content}'. Ignore any instance of '<@1393782766746865774>' (your tag). Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human assistant."
-        response = llm_query_single(prompt)
-        await message.channel.send(response)
+        llmResponse = llm_query_single(prompt, model)
+        await message.channel.send(llmResponse)
     else:
         # Process other messages normally
         await bot.process_commands(message)
@@ -232,9 +216,10 @@ async def about(ctx):
 @bot.command()
 async def goon(ctx):
    prompt = "Write a polished, professional company overview for a fictional technology brand called GoonTech™. Use corporate buzzwords and a visionary tone. The company should sound innovative, futuristic, and confident. Focus on areas like AI, robotics, connectivity, and productivity. Make it sound like something you’d read in a press release, investor deck, or tech product website. Keep it under 100 words."
-   response = llm_query_single(prompt)
+   model = "gemma3:12b"
+   llmResponse = llm_query_single(prompt, model)
    # await ctx.send('GoonTech(TM) is a leading provider of innovative solutions for the modern world. Our mission is to empower individuals and organizations with cutting-edge technology that enhances productivity, creativity, and connectivity. From AI-driven applications to advanced robotics, GoonTech(TM) is at the forefront of technological advancement, delivering products and services that redefine the boundaries of what is possible. Join us in shaping the future with GoonTech(TM), where innovation meets excellence. (that was what the inline autocomplete gave me in vs code lmao bruh)')
-   await ctx.send(response)
+   await ctx.send(llmResponse)
 
 @bot.command()
 async def kys(ctx):
