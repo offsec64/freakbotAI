@@ -189,7 +189,7 @@ async def vrchathours(ctx):
 
 @bot.event
 async def on_message(message):
-    if message.content.contains("<@1393782766746865774>"):
+    if "<@1393782766746865774>" in message.content():
         await message.channel.send("I love freaky bot ai too! It's so fun to play with AI and see what it can do! :D (test messsage)")
 
 # -------- Silly commands --------
