@@ -59,6 +59,31 @@ else:
     print("Failed to connect to the database.")
     mydb.close()
 
+def llm_query(prompt):
+
+    # Ollama API endpoint. Replace with an env var at some point
+    url = "http://10.10.10.81:80/api/generate"
+
+    # Request body
+    data = {
+        "model": "gemma3:12b",  # model to use 
+        "prompt": str(prompt),
+        "temperature": 1.9,        # High creativity
+        "repeat_penalty": 1.8,     # Penalize repetition (1.0 = no penalty)
+        "top_p": 0.8,           # Top-p sampling (0.0 = no top-p)
+        "stream": False  # Set to True if you want streaming responses
+    }
+
+    llmResponse = requests.post(url, json=data)
+
+    # Check for success
+    if llmResponse.status_code == 200:
+        print(llmResponse.json()["response"])
+    else:
+        print("Error:", llmResponse.status_code, llmResponse.text)
+
+    return llmResponse.json()["response"]
+
 # -------- XML Parsing --------
 
 def parse_xml_from_url_to_dict(STEAM_URL):
@@ -190,7 +215,9 @@ async def vrchathours(ctx):
 @bot.event
 async def on_message(message):
     if "<@1393782766746865774>" in message.content:
-        await message.channel.send("I love freaky bot ai too! It's so fun to play with AI and see what it can do! :D (test messsage)")
+        prompt = "Generate a response to this user's message. Ignore any instance of '<@1393782766746865774>': " + message.content
+        response = llm_query(prompt)
+        await message.channel.send(response)
 
 # -------- Silly commands --------
 
