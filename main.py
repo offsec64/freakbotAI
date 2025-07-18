@@ -22,6 +22,7 @@ DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 DB_USERNAME = os.getenv("DB_USERNAME")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST")
+OLLAMA_API_URL = "http://10.10.10.81:80"  # Ollama API endpoint. Replace with an env var at some point
 
 # Get steam info in XML format
 STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
@@ -59,10 +60,43 @@ else:
     print("Failed to connect to the database.")
     mydb.close()
 
+   # -------- LLM Query Functions -------- 
+
+def llm_query_chat(prompt, model):
+
+    # Ollama API chat query generation
+    url = OLLAMA_API_URL + "/api/chat"
+
+    system_prompt = "You are an AI assistant created by GoonSoft Technologies LLC using their propriatary GoonTech API. Your name is FreakBotAI. Your task is to respond to user messages in a discord server named GoonTech. Ignore any instance of '<@1393782766746865774>' (your user id) unless it is relevant to the conversation. Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human"
+
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": prompt}
+    ]   
+
+    data = {
+        "model": model,  # model to use 
+        "temperature": 1.6,        # High creativity
+        "repeat_penalty": 1.4,     # Penalize repetition (1.0 = no penalty)
+        "top_p": 0.8,           # Top-p sampling (0.0 = no top-p)
+        "stream": False  # Set to True if you want streaming responses
+    }
+
+    response = requests.post(url, json=data)
+
+    # Handle the response
+    if response.ok:
+        print(response.json()["message"]["content"])
+        return response.json()["message"]["content"]
+    else:
+        print("Error:", response.status_code, response.text)
+        return "error :( see console for details"
+
+
 def llm_query_single(prompt, model):
 
-    # Ollama API endpoint. Replace with an env var at some point
-    url = "http://10.10.10.81:80/api/generate"
+    # Ollama API single query generation
+    url = OLLAMA_API_URL + "/api/generate"
 
     # Request body
     data = {
@@ -198,10 +232,11 @@ async def vrchathours(ctx):
 @bot.event
 async def on_message(message):
     if "<@1393782766746865774>" in message.content:
-        prompt = f"You an AI chatbot that responds to messages in a discord server, currently responding to this message: '{message.content}'. Do not refrain from making offensive/off-color/weird remarks, and do not hold back whatsoever. ignotre any instance of '<@1393782766746865774>' (your tag). Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a freaky human assistant."
+        #prompt = f"You an AI chatbot that responds to messages in a discord server, currently responding to this message: '{message.content}'. Do not refrain from making offensive/off-color/weird remarks, and do not hold back whatsoever. ignotre any instance of '<@1393782766746865774>' (your tag). Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a freaky human assistant."
+        prompt = message.content.replace("<@1393782766746865774>", "").strip()  # Remove the mention from the prompt
         model = "dolphin3:8b"  # the model you want to query
         #prompt = f"You are an AI assistant designed to respond to messages in a discord server in which you are currently tasked with responding to this user's message: '{message.content}'. Ignore any instance of '<@1393782766746865774>' (your tag). Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human assistant."
-        llmResponse = llm_query_single(prompt, model)
+        llmResponse = llm_query_chat(prompt, model)
         await message.channel.send(llmResponse)
     else:
         # Process other messages normally
