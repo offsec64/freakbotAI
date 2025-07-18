@@ -59,7 +59,7 @@ else:
     print("Failed to connect to the database.")
     mydb.close()
 
-def llm_query(prompt):
+def llm_query_single(prompt):
 
     # Ollama API endpoint. Replace with an env var at some point
     url = "http://10.10.10.81:80/api/generate"
@@ -216,7 +216,7 @@ async def vrchathours(ctx):
 async def on_message(message):
     if "<@1393782766746865774>" in message.content:
         prompt = f"You are an AI assistant designed to respond to messages in a discord server in which you are currently tasked with responding to this user's message: '{message.content}'. Ignore any instance of '<@1393782766746865774>' (your tag). Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human assistant."
-        response = llm_query(prompt)
+        response = llm_query_single(prompt)
         await message.channel.send(response)
     else:
         # Process other messages normally
@@ -230,30 +230,10 @@ async def about(ctx):
 
 @bot.command()
 async def goon(ctx):
-  
-    # Ollama API endpoint
-    url = "http://10.10.10.81:80/api/generate"
-
-    # Request body
-    data = {
-        "model": "gemma3:12b",  # model to use 
-        "prompt": "Write a polished, professional company overview for a fictional technology brand called GoonTech™. Use corporate buzzwords and a visionary tone. The company should sound innovative, futuristic, and confident. Focus on areas like AI, robotics, connectivity, and productivity. Make it sound like something you’d read in a press release, investor deck, or tech product website. Keep it under 100 words.",
-        "temperature": 1.9,        # High creativity
-        "repeat_penalty": 1.8,     # Penalize repetition (1.0 = no penalty)
-        "top_p": 0.8,           # Top-p sampling (0.0 = no top-p)
-        "stream": False  # Set to True if you want streaming responses
-    }
-
-    llmResponse = requests.post(url, json=data)
-
-    # Check for success
-    if llmResponse.status_code == 200:
-        print(llmResponse.json()["response"])
-    else:
-        print("Error:", llmResponse.status_code, llmResponse.text)
-
+   prompt = "Write a polished, professional company overview for a fictional technology brand called GoonTech™. Use corporate buzzwords and a visionary tone. The company should sound innovative, futuristic, and confident. Focus on areas like AI, robotics, connectivity, and productivity. Make it sound like something you’d read in a press release, investor deck, or tech product website. Keep it under 100 words."
+   response = llm_query_single(prompt)
    # await ctx.send('GoonTech(TM) is a leading provider of innovative solutions for the modern world. Our mission is to empower individuals and organizations with cutting-edge technology that enhances productivity, creativity, and connectivity. From AI-driven applications to advanced robotics, GoonTech(TM) is at the forefront of technological advancement, delivering products and services that redefine the boundaries of what is possible. Join us in shaping the future with GoonTech(TM), where innovation meets excellence. (that was what the inline autocomplete gave me in vs code lmao bruh)')
-    await ctx.send(f"**{llmResponse.json()['response']}**")
+   await ctx.send(response)
 
 @bot.command()
 async def kys(ctx):
