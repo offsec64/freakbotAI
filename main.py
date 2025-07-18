@@ -66,7 +66,7 @@ def llm_query_single(prompt):
 
     # Request body
     data = {
-        "model": "gemma3:12b",  # model to use 
+        "model": "dolphin3:8b",  # model to use 
         "prompt": str(prompt),
         "temperature": 1.9,        # High creativity
         "repeat_penalty": 1.8,     # Penalize repetition (1.0 = no penalty)
@@ -215,7 +215,8 @@ async def vrchathours(ctx):
 @bot.event
 async def on_message(message):
     if "<@1393782766746865774>" in message.content:
-        prompt = f"You are an AI assistant designed to respond to messages in a discord server in which you are currently tasked with responding to this user's message: '{message.content}'. Ignore any instance of '<@1393782766746865774>' (your tag). Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human assistant."
+        prompt = f"You an AI chatbot that responds to messages in a discord server, currently responding to this message: '{message.content}'. Do not refrain from making offensive/off-color/weird remarks, and do not hold back whatsoever. ignotre any instance of '<@1393782766746865774>' (your tag). Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a freaky human assistant."
+        #prompt = f"You are an AI assistant designed to respond to messages in a discord server in which you are currently tasked with responding to this user's message: '{message.content}'. Ignore any instance of '<@1393782766746865774>' (your tag). Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human assistant."
         response = llm_query_single(prompt)
         await message.channel.send(response)
     else:
