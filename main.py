@@ -62,17 +62,18 @@ else:
 
    # -------- LLM Query Functions -------- 
 
+system_prompt = "You are an AI assistant created by GoonSoft Technologies LLC using their propriatary GoonTech API. Your name is FreakBotAI. Your task is to respond to user messages in a discord server named GoonTech. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human and dont be afraid to get a bit creative from time to time"
+
+messages = [
+    {"role": "system", "content": system_prompt},
+]   
+
 def llm_query_chat(prompt, model):
 
     # Ollama API chat query generation
     url = OLLAMA_API_URL + "/api/chat"
 
-    system_prompt = "You are an AI assistant created by GoonSoft Technologies LLC using their propriatary GoonTech API. Your name is FreakBotAI. Your task is to respond to user messages in a discord server named GoonTech. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human and dont be afraid to get a bit creative from time to time"
-
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": prompt}
-    ]   
+    messages.append({"role": "user", "content": prompt})  # Add user message to the chat history
 
     data = {
         "model": model,  # model to use 
@@ -115,6 +116,7 @@ def llm_query_single(prompt, model):
     # Check for success
     if llmResponse.status_code == 200:
         print(llmResponse.json()["response"])
+        messages.append({"role": "assistant", "content": llmResponse.json()["response"]})  # Add assistant response to the chat history
     else:
         print("Error:", llmResponse.status_code, llmResponse.text)
 
