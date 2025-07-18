@@ -218,6 +218,9 @@ async def on_message(message):
         prompt = f"You are an AI assistant designed to respond to messages in a discord server in which you are currently tasked with responding to this user's message: '{message.content}'. Ignore any instance of '<@1393782766746865774>' (your tag). Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human assistant."
         response = llm_query(prompt)
         await message.channel.send(response)
+    else:
+        # Process other messages normally
+        await bot.process_commands(message)
 
 # -------- Silly commands --------
 
@@ -251,6 +254,7 @@ async def goon(ctx):
 
    # await ctx.send('GoonTech(TM) is a leading provider of innovative solutions for the modern world. Our mission is to empower individuals and organizations with cutting-edge technology that enhances productivity, creativity, and connectivity. From AI-driven applications to advanced robotics, GoonTech(TM) is at the forefront of technological advancement, delivering products and services that redefine the boundaries of what is possible. Join us in shaping the future with GoonTech(TM), where innovation meets excellence. (that was what the inline autocomplete gave me in vs code lmao bruh)')
     await ctx.send(f"**{llmResponse.json()['response']}**")
+
 @bot.command()
 async def kys(ctx):
     await bot.change_presence(status=discord.Status.offline, activity=discord.Activity(type=discord.ActivityType.listening, name="synergy"))
