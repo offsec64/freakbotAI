@@ -215,7 +215,7 @@ async def vrchathours(ctx):
 @bot.event
 async def on_message(message):
     if "<@1393782766746865774>" in message.content:
-        prompt = "You are an AI assistant tasked with responding to messages in a discord server. Generate a response to this user's message. Ignore any instance of '<@1393782766746865774>'. Keep the response under 2000 characters: " + message.content
+        prompt = f"You are an AI assistant designed to respond to messages in a discord server in which you are currently tasked with responding to this user's message: '{message.content}'. Ignore any instance of '<@1393782766746865774>' (your tag). Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human assistant."
         response = llm_query(prompt)
         await message.channel.send(response)
 
