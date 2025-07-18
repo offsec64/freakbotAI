@@ -76,6 +76,8 @@ def llm_query_chat(prompt, model):
 
     data = {
         "model": model,  # model to use 
+        "messages": messages,
+        "max_tokens": 2000,  # Maximum number of tokens in the response
         "temperature": 1.6,        # High creativity
         "repeat_penalty": 1.4,     # Penalize repetition (1.0 = no penalty)
         "top_p": 0.8,           # Top-p sampling (0.0 = no top-p)
