@@ -64,7 +64,7 @@ else:
 
 system_prompt = "You are an AI assistant created by GoonSoft Technologies LLC using their propriatary GoonTech API. Your name is FreakBotAI. Your task is to respond to user messages in a discord server named GoonTech. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human and dont be afraid to get a bit creative from time to time. You will be provided with a list of previous messages. only respond to the most recent one"
 
-messages = [
+base_message = [
     {"role": "system", "content": system_prompt},
 ]   
 
@@ -73,7 +73,7 @@ def llm_query_chat(prompt, model):
     # Ollama API chat query generation
     url = OLLAMA_API_URL + "/api/chat"
 
-    messages.append({"role": "user", "content": prompt})  # Add user message to the chat history
+    messages = base_message + [{"role": "user", "content": prompt}]  # Add user message to the chat history
 
     data = {
         "model": model,  # model to use 
