@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from user_agents import parse as parse_ua
 
 load_dotenv()
-DISCORD_BOT_TOKEN = os.getenv("API_KEY")
+DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 DISCORD_CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID")
 OUTSIDE_PORT = os.getenv("OUTSIDE_PORT")
 ABSTRACT_API_KEY = os.getenv("ABSTRACT_API_KEY")
