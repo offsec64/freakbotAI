@@ -116,7 +116,7 @@ def llm_query_single(prompt, model):
     # Check for success
     if llmResponse.status_code == 200:
         print(llmResponse.json()["response"])
-        messages.append({"role": "assistant", "content": llmResponse.json()["response"]})  # Add assistant response to the chat history
+       #messages.append({"role": "assistant", "content": llmResponse.json()["response"]})  # Add assistant response to the chat history
     else:
         print("Error:", llmResponse.status_code, llmResponse.text)
 
