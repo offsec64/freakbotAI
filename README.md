@@ -12,18 +12,18 @@ This project is currently configured to work best on Ubuntu Server 24.04.2 or hi
 4. Create and populate a .env file as described in the *Enviroment Setup* section
 5. Run `pip install -r requirements.txt` to install all the necessary project dependencies into your virtual enviroment
    
-### Usage - Bot:  
+### Usage - Bot (main.py):  
 - Ensure you are using your python virtual enviroment you should have set up earlier
 - Make sure all enviroment variables are correctly set up for your specific deployment enviroment.
 - Run `python3 main.py` to start the bot.
 
-### Usage - Database Logger:
+### Usage - Database Logger (dblog.py):
 - Ensure you are using your python virtual enviroment you should have set up earlier
 - Make sure all enviroment variables are correctly set up for your specific deployment enviroment.
 - (If using Cron) Run `crontab -e` and add the line `0 * * * * /path-to-venv/venv/bin/python3 /path/to/script/dblog.py` to the end of the file. This will tell cron to execute the database logging script once per hour. You can use `crontab -l` to view crontab entries.
 - (If running once) Run `python3 dblog.py` 
 
-### Usage - Web Server:
+### Usage - Web Server (iplog.py):
 
 - Ensure you are using your python virtual enviroment you should have set up earlier
 - Make sure all enviroment variables are correctly set up for your specific deployment enviroment.
@@ -61,11 +61,13 @@ This project is currently configured to work best on Ubuntu Server 24.04.2 or hi
    - Run the gunicorn server with run.sh
    - Eventually I will update this guide to show how to make gunicorn run automatically with a system service
 
-  
+Now you should be able to access the webpage from the internet!  
+It is recommended that you proxy your web traffic through something like Cloudflare Tunnels to avoid having to expose a web port.
+
 ## Enviroment Setup:
 This project requires a .env file in the root directory with the following key/value pairs:  
 
-- DISCORD_BOT_TOKEN - Discord API key  
+- DISCORD_BOT_TOKEN - Discord bot auth token  
 - ABSTRACT_API_KEY - API key for the Abstract API  
 - DISCORD_CHANNEL_ID - Channel ID for the bot to post IP messages in  
 - OUTSIDE_PORT - Port for the web server to use 
@@ -78,12 +80,12 @@ This project requires a .env file in the root directory with the following key/v
 
 This project can be run off 1 physical server, though it is not recommended. Recommended setup is with 2 seperate servers, both existing inside of a DMZ VLAN for security reasons.
 
-Server 1: 
+**Server 1:** 
 - Ollama server running on port 11435 proxied to port 80 with nginx
 
-Server 2:
+**Server 2:**
 - MySQL server (can be hosted on a third server if you wish)
-- Web server to host the bot and webpage. Traffic should br proxied through something like Cloudflare Tunnels
+- Web server to host the bot and webpage. Traffic should be proxied through something like Cloudflare Tunnels
 
 ## Files:  
 - **dblog.py** - Database logging tool. Retreives data from Steam and adds it to a mySQL database. Use cron in the prod enviroment to run every hour.
