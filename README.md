@@ -51,9 +51,9 @@ This project is currently configured to work best on Ubuntu Server 24.04.2 or hi
          sudo nginx -t
          sudo systemctl reload nginx
          ```
-  - Gunicorn is used as the WSGI server for flask. Install it with: `pip install gunicorn`
-  - Run the gunicorn server with run.sh
-  - Eventually I will update this guide to show how to make gunicorn run automatically with a system service
+- Gunicorn is used as the WSGI server for flask. Install it with: `pip install gunicorn`
+- Run the gunicorn server with run.sh
+- Eventually I will update this guide to show how to make gunicorn run automatically with a system service
   
 ## Enviroment Setup:
 This project requires a .env file in the root directory with the following key/value pairs:  
