@@ -28,8 +28,33 @@ This project is currently configured to work best on Ubuntu Server 24.04.2 or hi
 
   #### Set up nginx:
     - nginx is used as reverse proxy/static content delivery service. Install it with `sudo apt install nginx`
-    -    
-
+    - Create a config file for the service: `sudo nano /etc/nginx/sites-available/goonsoft`
+    - Edit the config file to look like this:
+      
+      ```
+      server {
+          listen 80; # the port that nginx will listen on (web facing)
+          server_name your-domain.com;  # or use your server's IP
+      
+          location / {
+              proxy_pass http://127.0.0.1:8000; # local port that nginx will proxy
+              proxy_set_header Host $host;
+              proxy_set_header X-Real-IP $remote_addr;
+              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          }
+      }
+      ```
+     - Save the config and enable it with the following commands:
+       
+         ```
+         sudo ln -s /etc/nginx/sites-available/goonsoft /etc/nginx/sites-enabled/
+         sudo nginx -t
+         sudo systemctl reload nginx
+         ```
+  - Gunicorn is used as the WSGI server for flask. Install it with: `pip install gunicorn`
+  - Run the gunicorn server with run.sh
+  - Eventually I will update this guide to show how to make gunicorn run automatically with a system service
+  
 ## Enviroment Setup:
 This project requires a .env file in the root directory with the following key/value pairs:  
 
