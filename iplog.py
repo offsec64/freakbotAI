@@ -14,7 +14,7 @@ OUTSIDE_PORT = os.getenv("OUTSIDE_PORT")
 ABSTRACT_API_KEY = os.getenv("ABSTRACT_API_KEY")
 PATH_TO_WEBSITE = os.getenv("PATH_TO_WEBSITE")
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=PATH_TO_WEBSITE)
 
 # Function to send IP data to Discord
 def send_ip_to_discord(ip, data, user_agent_raw, method):
@@ -66,7 +66,7 @@ def send_ip_to_discord(ip, data, user_agent_raw, method):
 
 @app.route("/", methods=["GET"])
 def render_page():
-    return render_template(PATH_TO_WEBSITE + "/index.html")
+    return render_template("index.html")
 
 @app.route("/reveal", methods=["POST"])
 def reveal_ip():
