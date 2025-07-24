@@ -261,7 +261,7 @@ async def on_message(message):
                 paginator.add_line(line)
             
             for page in paginator.pages:
-                await message.channel.send(llmResponse)
+                await message.channel.send(page)
     else:
         # Process other messages normally
         await bot.process_commands(message)
