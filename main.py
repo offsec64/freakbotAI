@@ -242,16 +242,17 @@ async def vrchathours(ctx):
 
 @bot.event
 async def on_message(message):
-    if "<@1393782766746865774>" in message.content:
-    
-        prompt = message.content.replace("<@1393782766746865774>", "").strip()  # Remove the mention from the prompt
-        model = "dolphin3:8b"
-       
-        llmResponse = llm_query_chat(prompt, model)
-        await message.channel.send(llmResponse)
-    else:
-        # Process other messages normally
-        await bot.process_commands(message)
+    async with message.typing():
+        if "<@1393782766746865774>" in message.content:
+        
+            prompt = message.content.replace("<@1393782766746865774>", "").strip()  # Remove the mention from the prompt
+            model = "dolphin3:8b"
+        
+            llmResponse = llm_query_chat(prompt, model)
+            await message.channel.send(llmResponse)
+        else:
+            # Process other messages normally
+            await bot.process_commands(message)
 
 # -------- Silly commands --------
 
