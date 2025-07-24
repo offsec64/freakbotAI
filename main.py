@@ -43,7 +43,7 @@ if mydb.is_connected():
     mycursor = mydb.cursor()
 
     # Selects the most recent entry from the steam_data table
-    mycursor.execute("SELECT * FROM `steam_data` ORDER BY `timestamp` DESC LIMIT 2")
+    mycursor.execute("SELECT * FROM `steam_data` ORDER BY `timestamp` DESC LIMIT 24")
     result = mycursor.fetchall()
 
     if result:
@@ -219,18 +219,23 @@ async def steam(ctx):
 @bot.command()
 async def vrchathours(ctx):
     channel = bot.get_channel(1393808557257789471)
+    """
     for row in result:
         most_played_game = row[2]
         hours = row[3]
         timestamp = row[4]
         msg = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC"
-
+    """
+    latestHours = int(result[0][3])
+    previousHours = int(result[23][3])
+    delta = latestHours - previousHours
+    
     # Ollama API endpoint
-    prompt = f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{msg}'. Make a snarky one-liner about it. Be creative and savage. Please refer to this person as Henry-sama. Do not hold back"
+    prompt = f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{latestHours} Hours'. Make a snarky one-liner about it. Be creative and savage. Please refer to this person as Henry-sama. Do not hold back"
     model = "dolphin3:8b"  # the model you want to query
     llmResponse = llm_query_single(prompt, model)
     # Send the message to the channel
-    await channel.send(f"**{msg}**")
+    await channel.send(f"**{latestHours} Hours. Change since yesterday: {delta}**")
     await channel.send(llmResponse)
 
 @bot.event
