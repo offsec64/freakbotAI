@@ -249,14 +249,15 @@ async def vrchathours(ctx):
 async def on_message(message):
    
     if "<@1393782766746865774>" in message.content:
-    
-        prompt = message.content.replace("<@1393782766746865774>", "").strip()  # Remove the mention from the prompt
-        model = "dolphin3:8b"
-    
-        llmResponse = llm_query_chat(prompt, model)
-        paginator = commands.Paginator()
 
         async with message.channel.typing():
+            prompt = message.content.replace("<@1393782766746865774>", "").strip()  # Remove the mention from the prompt
+            model = "dolphin3:8b"
+        
+            llmResponse = llm_query_chat(prompt, model)
+            paginator = commands.Paginator()
+
+            
             for line in llmResponse.splitlines():
                 paginator.add_line(line)
             
