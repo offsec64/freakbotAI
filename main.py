@@ -43,13 +43,13 @@ if mydb.is_connected():
     mycursor = mydb.cursor()
 
     # Selects the most recent entry from the steam_data table
-    mycursor.execute("SELECT * FROM `steam_data` ORDER BY `timestamp` DESC LIMIT 1")
+    mycursor.execute("SELECT * FROM `steam_data` ORDER BY `timestamp` DESC LIMIT 2")
     result = mycursor.fetchall()
 
     if result:
         print("Most recent entry in steam_data:")
         for row in result:
-            print(row[3] + " Hours @ " + row[4] + " UTC")  # Assuming the 4th and 5th columns are the relevant data
+            print(row[3] + " Hours @ " + row[4] + " UTC")
     else:
         print("No entries found in steam_data table.")
 
