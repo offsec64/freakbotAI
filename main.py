@@ -218,27 +218,27 @@ async def steam(ctx):
 #Sends the most recent VRChat hours played to a locally hosted LLM API and posts the response to a Discord channel
 @bot.command()
 async def vrchathours(ctx):
+    async with ctx.typing():
 
-    channel = bot.get_channel(1393808557257789471)
-    """
-    for row in result:
-        most_played_game = row[2]
-        hours = row[3]
-        timestamp = row[4]
-        msg = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC"
-    """
-    gameName = result[0][2]
-    latestHours = int(result[0][3])
-    previousHours = int(result[23][3])
-    delta = latestHours - previousHours
-    
-    prompt = f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{latestHours} Hours in {gameName}'. Make a snarky one-liner about it. Be creative and savage. Please refer to this person as Henry-sama. Do not hold back"
-    model = "dolphin3:8b"
-    llmResponse = llm_query_single(prompt, model)
+        channel = bot.get_channel(1393808557257789471)
+        """
+        for row in result:
+            most_played_game = row[2]
+            hours = row[3]
+            timestamp = row[4]
+            msg = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC"
+        """
+        gameName = result[0][2]
+        latestHours = int(result[0][3])
+        previousHours = int(result[23][3])
+        delta = latestHours - previousHours
+        
+        prompt = f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{latestHours} Hours in {gameName}'. Make a snarky one-liner about it. Be creative and savage. Please refer to this person as Henry-sama. Do not hold back"
+        model = "dolphin3:8b"
+        llmResponse = llm_query_single(prompt, model)
 
-    # Send the message to the channel
-    await channel.send(f"**Current Hours in '{gameName}': {latestHours}\nChange since yesterday: {delta} Hours**")
-    await channel.send(llmResponse)
+        # Send the message to the channel
+        await channel.send(f"**Current Hours in '{gameName}': {latestHours}\nChange since yesterday: {delta} Hours**\n{llmResponse}")
 
 @bot.event
 async def on_message(message):
