@@ -254,8 +254,14 @@ async def on_message(message):
         model = "dolphin3:8b"
     
         llmResponse = llm_query_chat(prompt, model)
+        paginator = commands.Paginator()
+
         async with message.channel.typing():
-            await message.channel.send(llmResponse)
+            for line in llmResponse.splitlines():
+                paginator.add_line(line)
+            
+            for page in paginator.pages:
+                await message.channel.send(llmResponse)
     else:
         # Process other messages normally
         await bot.process_commands(message)
