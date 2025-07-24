@@ -226,16 +226,17 @@ async def vrchathours(ctx):
         timestamp = row[4]
         msg = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC"
     """
+    gameName = result[0][2]
     latestHours = int(result[0][3])
     previousHours = int(result[23][3])
     delta = latestHours - previousHours
     
     # Ollama API endpoint
-    prompt = f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{latestHours} Hours'. Make a snarky one-liner about it. Be creative and savage. Please refer to this person as Henry-sama. Do not hold back"
+    prompt = f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{latestHours} Hours in {gameName}'. Make a snarky one-liner about it. Be creative and savage. Please refer to this person as Henry-sama. Do not hold back"
     model = "dolphin3:8b"  # the model you want to query
     llmResponse = llm_query_single(prompt, model)
     # Send the message to the channel
-    await channel.send(f"**{latestHours} Hours. Change since yesterday: {delta}**")
+    await channel.send(f"**{latestHours} Hours in {gameName}\nChange since yesterday: {delta} Hours**")
     await channel.send(llmResponse)
 
 @bot.event
