@@ -242,7 +242,7 @@ async def vrchathours(ctx):
 
 @bot.event
 async def on_message(message):
-    async with message.typing():
+    async with message.channel.typing():
         if "<@1393782766746865774>" in message.content:
         
             prompt = message.content.replace("<@1393782766746865774>", "").strip()  # Remove the mention from the prompt
