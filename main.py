@@ -62,12 +62,13 @@ else:
 
    # -------- LLM Query Functions -------- 
 
-system_prompt = "You are an AI assistant created by GoonSoft Technologies LLC using their propriatary GoonTech API. Your name is FreakBotAI. Your task is to respond to user messages in a discord server named GoonTech. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human and dont be afraid to get a bit creative from time to time. You will be provided with a list of previous messages. only respond to the most recent one"
+system_prompt = "You are an AI assistant created by GoonSoft Technologies LLC using their propriatary GoonTech API. Your name is FreakBotAI. Your task is to respond to user messages in a discord server named GoonTech. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human and dont be afraid to get a bit creative from time to time."
 
 base_message = [
     {"role": "system", "content": system_prompt},
 ]   
 
+# Queries the ollama API in chat mode
 def llm_query_chat(prompt, model):
 
     # Ollama API chat query generation
@@ -95,10 +96,9 @@ def llm_query_chat(prompt, model):
         print("Error:", response.status_code, response.text)
         return "error :( see console for details"
 
-
+# Queries the ollama API in single query mode
 def llm_query_single(prompt, model):
 
-    # Ollama API single query generation
     url = OLLAMA_API_URL + "/api/generate"
 
     # Request body
@@ -218,6 +218,7 @@ async def steam(ctx):
 #Sends the most recent VRChat hours played to a locally hosted LLM API and posts the response to a Discord channel
 @bot.command()
 async def vrchathours(ctx):
+
     channel = bot.get_channel(1393808557257789471)
     """
     for row in result:
@@ -231,21 +232,21 @@ async def vrchathours(ctx):
     previousHours = int(result[23][3])
     delta = latestHours - previousHours
     
-    # Ollama API endpoint
     prompt = f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{latestHours} Hours in {gameName}'. Make a snarky one-liner about it. Be creative and savage. Please refer to this person as Henry-sama. Do not hold back"
-    model = "dolphin3:8b"  # the model you want to query
+    model = "dolphin3:8b"
     llmResponse = llm_query_single(prompt, model)
+
     # Send the message to the channel
-    await channel.send(f"**{latestHours} Hours in {gameName}\nChange since yesterday: {delta} Hours**")
+    await channel.send(f"**Current Hours in '{gameName}': {latestHours}\nChange since yesterday: {delta} Hours**")
     await channel.send(llmResponse)
 
 @bot.event
 async def on_message(message):
     if "<@1393782766746865774>" in message.content:
-        #prompt = f"You an AI chatbot that responds to messages in a discord server, currently responding to this message: '{message.content}'. Do not refrain from making offensive/off-color/weird remarks, and do not hold back whatsoever. ignotre any instance of '<@1393782766746865774>' (your tag). Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a freaky human assistant."
+    
         prompt = message.content.replace("<@1393782766746865774>", "").strip()  # Remove the mention from the prompt
-        model = "dolphin3:8b"  # the model you want to query
-        #prompt = f"You are an AI assistant designed to respond to messages in a discord server in which you are currently tasked with responding to this user's message: '{message.content}'. Ignore any instance of '<@1393782766746865774>' (your tag). Keep the response under 2000 characters. Do not include any disclaimers or warnings about AI responses. Just respond as if you were a human assistant."
+        model = "dolphin3:8b"
+       
         llmResponse = llm_query_chat(prompt, model)
         await message.channel.send(llmResponse)
     else:
@@ -256,18 +257,21 @@ async def on_message(message):
 
 @bot.command()
 async def about(ctx):
-    await ctx.send('Synergizing Soy-Based Approaches to Suicide Mitigation Tactics Using Artificial Intelligence Since: ' + str(aboutTime))
+    await ctx.send('Synergizing Soy-Based Approaches to Suicide Mitigation Tactics Using the Power of Artificial Intelligence Since: ' + str(aboutTime))
 
 @bot.command()
 async def goon(ctx):
+   
    prompt = "Write a polished, professional company overview for a fictional technology brand called GoonTech™. Use corporate buzzwords and a visionary tone. The company should sound innovative, futuristic, and confident. Focus on areas like AI, robotics, connectivity, and productivity. Make it sound like something you’d read in a press release, investor deck, or tech product website. Keep it under 100 words."
    model = "gemma3:12b"
    llmResponse = llm_query_single(prompt, model)
+
    # await ctx.send('GoonTech(TM) is a leading provider of innovative solutions for the modern world. Our mission is to empower individuals and organizations with cutting-edge technology that enhances productivity, creativity, and connectivity. From AI-driven applications to advanced robotics, GoonTech(TM) is at the forefront of technological advancement, delivering products and services that redefine the boundaries of what is possible. Join us in shaping the future with GoonTech(TM), where innovation meets excellence. (that was what the inline autocomplete gave me in vs code lmao bruh)')
    await ctx.send(llmResponse)
 
 @bot.command()
 async def kys(ctx):
+
     await bot.change_presence(status=discord.Status.offline, activity=discord.Activity(type=discord.ActivityType.listening, name="synergy"))
     await ctx.send('um what the flip man...... if youre happy then im happy i guess :((((((')
     await ctx.send('**you\'re')
@@ -278,7 +282,7 @@ async def ukys(ctx):
     await bot.change_presence(status=discord.Status.do_not_disturb, activity=discord.CustomActivity(name=corpobs.json()["phrase"]))
     await ctx.send('screw you then buddy')
 
-# Runs the bot
+# Run the bot
 if __name__ == "__main__":
     bot.run(DISCORD_BOT_TOKEN)
 
