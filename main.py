@@ -19,9 +19,9 @@ aboutTime = datetime.now()
 load_dotenv(override=True)
 
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
-DISCORD_GENERAL_CHANNEL = str(os.getenv("DISCORD_GENERAL_CHANNEL"))
-DISCORD_ROUGEAI_CHANNEL = str(os.getenv("DISCORD_ROUGEAI_CHANNEL"))
-DISCORD_STEAMHOURS_CHANNEL = str(os.getenv("DISCORD_STEAMHOURS_CHANNEL"))
+DISCORD_GENERAL_CHANNEL = os.getenv("DISCORD_GENERAL_CHANNEL")
+DISCORD_ROUGEAI_CHANNEL = os.getenv("DISCORD_ROUGEAI_CHANNEL")
+DISCORD_STEAMHOURS_CHANNEL = os.getenv("DISCORD_STEAMHOURS_CHANNEL")
 DB_USERNAME = os.getenv("DB_USERNAME")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST")
@@ -227,7 +227,7 @@ async def steam(ctx):
 @bot.command()
 async def vrchathours(ctx):
 
-    channel = bot.get_channel("1393808557257789471")
+    channel = bot.get_channel(DISCORD_STEAMHOURS_CHANNEL)  # Get the channel to send the message to
 
     async with ctx.typing():
 
