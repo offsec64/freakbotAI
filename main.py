@@ -291,14 +291,14 @@ async def goon(ctx):
 @bot.command()
 async def kys(ctx):
 
-    await bot.change_presence(status=discord.Status.offline, activity=discord.Activity(type=discord.ActivityType.listening, name="synergy"))
+    await bot.change_presence(status=discord.Status.do_not_disturb, activity=discord.CustomActivity(name="im sorry..."))
     await ctx.send('um what the flip man...... if youre happy then im happy i guess :((((((')
     await ctx.send('**you\'re')
 
 @bot.command()
 async def ukys(ctx):
     
-    await bot.change_presence(status=discord.Status.do_not_disturb, activity=discord.CustomActivity(name=corpobs.json()["phrase"]))
+    await bot.change_presence(status=discord.Status.online, activity=discord.CustomActivity(name=corpobs.json()["phrase"]))
     await ctx.send('screw you then buddy')
 
 # Run the bot
