@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 aboutTime = datetime.now()
 
 #API key retrevial from enviroment variable. Uses the python-dotenv library
-load_dotenv()
+load_dotenv(override=True)
 
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 DISCORD_GENERAL_CHANNEL = str(os.getenv("DISCORD_GENERAL_CHANNEL"))
