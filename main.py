@@ -240,7 +240,7 @@ async def vrchathours(ctx):
         """
         gameName = result[0][2]
         latestHours = int(result[0][3])
-        previousHours = int(result[23][3])
+        previousHours = int(result[1][3])
         delta = latestHours - previousHours
         
         prompt = f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{latestHours} Hours in {gameName}'. Make a snarky one-liner about it. Be creative and savage. Please refer to this person as Henry-sama. Do not hold back"
