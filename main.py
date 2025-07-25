@@ -227,7 +227,7 @@ async def steam(ctx):
 @bot.command()
 async def vrchathours(ctx):
 
-    channel = bot.get_channel(DISCORD_STEAMHOURS_CHANNEL)  # Get the channel to send the message to
+    channel = bot.get_channel(int(DISCORD_STEAMHOURS_CHANNEL))  # Get the channel to send the message to
 
     async with ctx.typing():
 
