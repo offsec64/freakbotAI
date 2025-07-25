@@ -97,7 +97,7 @@ if mydb.is_connected():
     mycursor.execute(sql, val)
     mydb.commit()
 
-    mycursor.execute("SELECT * FROM steam_data")
+    mycursor.execute("SELECT * FROM steam_data ORDER BY timestamp DESC LIMIT 10")
 
     myresult = mycursor.fetchall()
 
