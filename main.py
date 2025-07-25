@@ -226,9 +226,11 @@ async def steam(ctx):
 #Sends the most recent VRChat hours played to a locally hosted LLM API and posts the response to a Discord channel
 @bot.command()
 async def vrchathours(ctx):
+
+    channel = bot.get_channel("1393808557257789471")
+
     async with ctx.typing():
 
-        channel = bot.get_channel("1393808557257789471")  # Get the channel to send the message to
         """
         for row in result:
             most_played_game = row[2]
