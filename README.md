@@ -20,7 +20,7 @@ This project is currently configured to work best on Ubuntu Server 24.04.2 or hi
 ### Usage - Database Logger (dblog.py):
 - Ensure you are using your python virtual enviroment you should have set up earlier
 - Make sure all enviroment variables are correctly set up for your specific deployment enviroment.
-- (If using Cron) Run `crontab -e` and add the line `0 * * * * /path-to-venv/venv/bin/python3 /path/to/script/dblog.py` to the end of the file. This will tell cron to execute the database logging script once per hour. You can use `crontab -l` to view crontab entries.
+- (If using Cron) Run `crontab -e` and add the line `0 0 * * * /path-to-venv/venv/bin/python3 /path/to/script/dblog.py` to the end of the file. This will tell cron to execute the database logging script once per day. You can use `crontab -l` to view crontab entries.
 - (If running once) Run `python3 dblog.py` 
 
 ### Usage - Web Server (iplog.py):
