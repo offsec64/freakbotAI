@@ -46,7 +46,7 @@ if mydb.is_connected():
     mycursor = mydb.cursor()
 
     # Selects the most recent entry from the steam_data table
-    mycursor.execute("SELECT * FROM `steam_data` ORDER BY `timestamp` DESC LIMIT 24")
+    mycursor.execute("SELECT * FROM `steam_data` ORDER BY `timestamp` DESC LIMIT 2")
     result = mycursor.fetchall()
 
     if result:
