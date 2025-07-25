@@ -25,7 +25,7 @@ DISCORD_STEAMHOURS_CHANNEL = str(os.getenv("DISCORD_STEAMHOURS_CHANNEL"))
 DB_USERNAME = os.getenv("DB_USERNAME")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST")
-OLLAMA_API_URL = os.getenv("OLLAMA_API_URL")  # Ollama API endpoint. Replace with an env var at some point
+OLLAMA_API_URL = str(os.getenv("OLLAMA_API_URL"))  # Ollama API endpoint. Replace with an env var at some point
 
 # Get steam info in XML format
 STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
@@ -80,7 +80,7 @@ base_message = [
 def llm_query_chat(prompt, model):
 
     # Ollama API chat query generation
-    url = OLLAMA_API_URL + "/api/chat"
+    url = "http://" + OLLAMA_API_URL + "/api/chat"
 
     messages = base_message + [{"role": "user", "content": prompt}]  # Add user message to the chat history
 
@@ -228,7 +228,7 @@ async def steam(ctx):
 async def vrchathours(ctx):
     async with ctx.typing():
 
-        channel = bot.get_channel("1393808557257789471")
+        channel = bot.get_channel(DISCORD_STEAMHOURS_CHANNEL)  # Get the channel to send the message to
         """
         for row in result:
             most_played_game = row[2]
