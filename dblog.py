@@ -70,15 +70,15 @@ if mydb.is_connected():
     #This needs to go into a try/catch block at some point
 
     for game in parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"]:
-        if game["gameName"] == "VRChat":
-            print("Found VRChat in most played games")
+        if game["gameName"] == "SteamVR":
+            print("Found SteamVR in most played games")
             hours = game["hoursOnRecord"]
             hours = hours.replace(",", "")
             game_name = game["gameName"]
             #steam_id = parsed_data["profile"]["steamID64"]
             break
     else:   
-        print("VRChat not found in most played games")
+        print("SteamVR not found in most played games")
         mydb.close()
 
     #hours = parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["hoursOnRecord"]
