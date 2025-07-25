@@ -32,7 +32,7 @@ STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
 
 # ------- Database Connection --------
 
-result = None
+databaseResult = None
 
 mydb = mysql.connector.connect(
     host=DB_HOST,
@@ -47,11 +47,11 @@ if mydb.is_connected():
 
     # Selects the most recent entry from the steam_data table
     mycursor.execute("SELECT * FROM `steam_data` ORDER BY `timestamp` DESC LIMIT 2")
-    result = mycursor.fetchall()
+    databaseResult = mycursor.fetchall()
 
-    if result:
+    if databaseResult:
         print("Most recent entry in steam_data:")
-        for row in result:
+        for row in databaseResult:
             print(row[3] + " Hours @ " + row[4] + " UTC")
     else:
         print("No entries found in steam_data table.")
@@ -238,9 +238,9 @@ async def vrchathours(ctx):
             timestamp = row[4]
             msg = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC"
         """
-        gameName = result[0][2]
-        latestHours = int(result[0][3])
-        previousHours = int(result[1][3])
+        gameName = databaseResult[0][2]
+        latestHours = int(databaseResult[0][3])
+        previousHours = int(databaseResult[1][3])
         delta = latestHours - previousHours
         
         prompt = f"You’re a sarcastic AI assistant who just saw this Steam user's playtime in a game: '{latestHours} Hours in {gameName}'. Make a snarky one-liner about it. Be creative and savage. Please refer to this person as Henry-sama. Do not hold back"
