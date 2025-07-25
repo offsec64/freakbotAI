@@ -19,10 +19,13 @@ aboutTime = datetime.now()
 load_dotenv()
 
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+DISCORD_GENERAL_CHANNEL = os.getenv("DISCORD_GENERAL_CHANNEL")
+DISCORD_ROUGEAI_CHANNEL = os.getenv("DISCORD_ROUGEAI_CHANNEL")
+DISCORD_STEAMHOURS_CHANNEL = os.getenv("DISCORD_STEAMHOURS_CHANNEL")
 DB_USERNAME = os.getenv("DB_USERNAME")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST")
-OLLAMA_API_URL = "http://10.10.10.81:80"  # Ollama API endpoint. Replace with an env var at some point
+OLLAMA_API_URL = os.getenv("OLLAMA_API_URL")  # Ollama API endpoint. Replace with an env var at some point
 
 # Get steam info in XML format
 STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
@@ -225,7 +228,7 @@ async def steam(ctx):
 async def vrchathours(ctx):
     async with ctx.typing():
 
-        channel = bot.get_channel(1393808557257789471)
+        channel = bot.get_channel(DISCORD_STEAMHOURS_CHANNEL)
         """
         for row in result:
             most_played_game = row[2]
