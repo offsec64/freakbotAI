@@ -107,7 +107,7 @@ def llm_query_chat(prompt, model):
 # Queries the ollama API in single query mode
 def llm_query_single(prompt, model):
 
-    url = OLLAMA_API_URL + "/api/generate"
+    url = "http://" + OLLAMA_API_URL + "/api/generate"
 
     # Request body
     data = {
