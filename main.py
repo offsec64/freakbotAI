@@ -228,7 +228,7 @@ async def steam(ctx):
 async def vrchathours(ctx):
     async with ctx.typing():
 
-        channel = bot.fetch_channel("1393808557257789471")  # Get the channel to send the message to
+        channel = bot.get_channel("1393808557257789471")  # Get the channel to send the message to
         """
         for row in result:
             most_played_game = row[2]
