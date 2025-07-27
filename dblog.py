@@ -77,6 +77,8 @@ if mydb.is_connected():
             game_name = game["gameName"]
             #steam_id = parsed_data["profile"]["steamID64"]
             break
+        else:
+            print(game["gameName"])
     else:   
         print("SteamVR not found in most played games")
         mydb.close()
