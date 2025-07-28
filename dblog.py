@@ -67,37 +67,29 @@ if mydb.is_connected():
     print("Connected to MySQL database")
     mycursor = mydb.cursor()
 
+    current_time = datetime.now()
+    formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    steam_id = parsed_data["profile"]["steamID64"]
+
     #This needs to go into a try/catch block at some point
 
     for game in parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"]:
-        if game["gameName"] == "SteamVR":
-            print("Found SteamVR in most played games")
-            hours = game["hoursOnRecord"]
-            hours = hours.replace(",", "")
-            game_name = game["gameName"]
-            #steam_id = parsed_data["profile"]["steamID64"]
-            break
-        else:
-            print(game["gameName"])
-    else:   
-        print("SteamVR not found in most played games")
-        mydb.close()
+        hours = game["hoursOnRecord"]
+        hours = hours.replace(",", "")
+        game_name = game["gameName"]
+
+        sql="INSERT INTO steam_data (steamid, game_name, hours, timestamp) VALUES (%s, %s, %s, %s)"
+        val= (steam_id, game_name, hours, formatted_time)
+
+        mycursor.execute(sql, val)
+        mydb.commit()
+
 
     #hours = parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["hoursOnRecord"]
     #hours = hours.replace(",", "")
 
     #game_name = parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["gameName"]
-
-    steam_id = parsed_data["profile"]["steamID64"]
-
-    current_time = datetime.now()
-    formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
-
-    sql="INSERT INTO steam_data (steamid, game_name, hours, timestamp) VALUES (%s, %s, %s, %s)"
-    val= (steam_id, game_name, hours, formatted_time)
-
-    mycursor.execute(sql, val)
-    mydb.commit()
 
     mycursor.execute("SELECT * FROM steam_data ORDER BY timestamp DESC LIMIT 10")
 
