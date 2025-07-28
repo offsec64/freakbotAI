@@ -58,33 +58,33 @@ mydb = mysql.connector.connect(
     password=DB_PASSWORD,
     database="goontech"
 )
+# Check if the database connection was successful
+if mydb.is_connected():
+    print("Connected to the database successfully!")
+else:
+    print("Failed to connect to the database.")
+    mydb.close()
+    raise ConnectionError("Could not connect to the MySQL database. Please check your credentials and network connection.")
 
 #Database query function. Takes a table name and number of rows to return. Defaults to 2 rows.
 def query_database(table, rows=2):
 
-    databaseResult = None
+    print("Connected to the database successfully!")
+    mycursor = mydb.cursor()
 
-    if mydb.is_connected():
-        print("Connected to the database successfully!")
-        mycursor = mydb.cursor()
+    # Selects the most recent entry from the steam_data table
+    mycursor.execute(f"SELECT * FROM `{table}` ORDER BY `timestamp` DESC LIMIT {rows}")
+    databaseResult = mycursor.fetchall()
 
-        # Selects the most recent entry from the steam_data table
-        mycursor.execute(f"SELECT * FROM `{table}` ORDER BY `timestamp` DESC LIMIT {rows}")
-        databaseResult = mycursor.fetchall()
-
-        if databaseResult:
-            print("Most recent entry in steam_data:")
-            for row in databaseResult:
-                print(row[3] + " Hours @ " + row[4] + " UTC")
-        else:
-            print(f"No entries found in '{table}' table.")
-
-        mycursor.close()
-        mydb.close()
-
+    if databaseResult:
+        print("Most recent entry in steam_data:")
+        for row in databaseResult:
+            print(row[3] + " Hours @ " + row[4] + " UTC")
     else:
-        print("Failed to connect to the database.")
-        mydb.close()
+        print(f"No entries found in '{table}' table.")
+
+    mycursor.close()
+    mydb.close()
 
     return databaseResult
 
