@@ -72,6 +72,7 @@ if mydb.is_connected():
 
     steam_id = parsed_data["profile"]["steamID64"]
 
+    # Creates a table if not already present, then populates the steam data into the table
     #This needs to go into a try/catch block at some point
 
     for game in parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"]:
@@ -89,18 +90,12 @@ if mydb.is_connected():
         insert_data = f"INSERT INTO {formatted_name}  " + "(steam_id, game_name, hours, timestamp) VALUES (%s, %s, %s, %s)"
         val = (steam_id, game_name, hours, formatted_time)
 
-       # sql="INSERT INTO steam_data (steamid, game_name, hours, timestamp) VALUES (%s, %s, %s, %s)"
         
         mycursor.execute(insert_data, val)
         mydb.commit()
 
 
-    #hours = parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["hoursOnRecord"]
-    #hours = hours.replace(",", "")
-
-    #game_name = parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["gameName"]
-
-    mycursor.execute("SELECT * FROM steam_data ORDER BY timestamp DESC LIMIT 10")
+    mycursor.execute("SELECT * FROM vrchat ORDER BY timestamp DESC LIMIT 10")
 
     myresult = mycursor.fetchall()
 
