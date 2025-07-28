@@ -75,14 +75,23 @@ if mydb.is_connected():
     #This needs to go into a try/catch block at some point
 
     for game in parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"]:
+
+        game_name = game["gameName"]
+        formatted_name = game_name.replace(" ", "_")
+        formatted_name = formatted_name.lower()
+
         hours = game["hoursOnRecord"]
         hours = hours.replace(",", "")
-        game_name = game["gameName"]
 
-        sql="INSERT INTO steam_data (steamid, game_name, hours, timestamp) VALUES (%s, %s, %s, %s)"
-        val= (steam_id, game_name, hours, formatted_time)
+        create_table = f"CREATE TABLE IF NOT EXISTS {formatted_name} (id INT AUTO_INCREMENT PRIMARY KEY, steam_id VARCHAR(50) NOT NULL, game_name VARCHAR(50), hours VARCHAR(50) NOT NULL, timestamp VARCHAR(100) NOT NULL UNIQUE);"
+        mycursor.execute(create_table)
 
-        mycursor.execute(sql, val)
+        insert_data = f"INSERT INTO {formatted_name}  " + "(hours, timestamp) VALUES (%s, %s, %s, %s)"
+        val = (steam_id, game_name, hours, formatted_time)
+
+       # sql="INSERT INTO steam_data (steamid, game_name, hours, timestamp) VALUES (%s, %s, %s, %s)"
+        
+        mycursor.execute(insert_data, val)
         mydb.commit()
 
 
