@@ -218,7 +218,7 @@ async def statuschange():
 #Shows an overview of the target user's Steam profile
 @bot.command()
 async def steam(ctx):
-
+    
     vrchatData = query_database("vrchat", 1)
     steamvrData = query_database("steamvr", 1)
 
@@ -230,11 +230,12 @@ async def steam(ctx):
     embed.set_author(name="SteamAPI")
 
     embed.add_field(name="VRChat hours played",
-                    value=f"**{vrchatData[3]} Hours**\nLast updated: {vrchatData[4]} UTC",
+                    value=f"**{vrchatData[0][2]} Hours**\nLast updated: {vrchatData[3]} UTC",
                     inline=False)
     embed.add_field(name="SteamVR hours played",
-                    value=f"**{steamvrData[3]} Hours**\nLast updated: {steamvrData[4]} UTC",
+                    value=f"**{steamvrData[0][2]} Hours**\nLast updated: {steamvrData[3]} UTC",
                     inline=False)
+    
     '''
     embed.add_field(name=parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["gameName"],
                     value=f"Hours Played: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["hoursPlayed"]}\nHours on Record: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["hoursOnRecord"]}",
