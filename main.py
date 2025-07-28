@@ -248,7 +248,7 @@ async def vrchathours(ctx):
         llmResponse = llm_query_single(prompt, model)
 
         # Send the message to the channel
-        await channel.send(f"**Current Hours in '{gameName}': {latestHours}\nChange since yesterday: {delta} Hours**\n{llmResponse}")
+        await channel.send(f"**Current Hours in '{gameName}': {latestHours}\nChange since last log: {delta} Hours**\n\n{llmResponse}")
 
 @bot.event
 async def on_message(message):
