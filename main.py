@@ -12,12 +12,13 @@ from datetime import datetime, timedelta
 
 # -------- Variables --------
 
-#Stores the time when the server first started up. Used in the !about command
+#Stores the time when the server first started up.
 aboutTime = datetime.now()
 
 #API key retrevial from enviroment variable. Uses the python-dotenv library
 load_dotenv(override=True)
 
+#Gather envirement variables
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 DISCORD_GENERAL_CHANNEL = int(os.getenv("DISCORD_GENERAL_CHANNEL"))
 DISCORD_ROUGEAI_CHANNEL = int(os.getenv("DISCORD_ROUGEAI_CHANNEL"))
@@ -25,30 +26,50 @@ DISCORD_STEAMHOURS_CHANNEL = int(os.getenv("DISCORD_STEAMHOURS_CHANNEL"))
 DB_USERNAME = os.getenv("DB_USERNAME")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST")
-OLLAMA_API_URL = str(os.getenv("OLLAMA_API_URL"))  # Ollama API endpoint. Replace with an env var at some point
+OLLAMA_API_URL = str(os.getenv("OLLAMA_API_URL"))
 
-# Get steam info in XML format
+
+#Checks if the enviroment variables are set correctly
+if not DISCORD_GENERAL_CHANNEL or not DISCORD_ROUGEAI_CHANNEL or not DISCORD_STEAMHOURS_CHANNEL:
+    print("Discord channel IDs are not set in the environment variables.")
+    raise ValueError("Please ensure DISCORD_GENERAL_CHANNEL, DISCORD_ROUGEAI_CHANNEL, and DISCORD_STEAMHOURS_CHANNEL are set in your .env file.")
+
+if not DB_USERNAME or not DB_PASSWORD or not DB_HOST:
+    print("Database credentials are not set in the environment variables.")
+    raise ValueError("Please ensure DB_USERNAME, DB_PASSWORD, and DB_HOST are set in your .env file.")
+
+if not DISCORD_BOT_TOKEN:
+    print("Discord bot token is not set in the environment variables.")
+    raise ValueError("Please set DISCORD_BOT_TOKEN in your .env file.")
+
+if not OLLAMA_API_URL:
+    print("Ollama API URL is not set in the environment variables.")
+    raise ValueError("Please set OLLAMA_API_URL in your .env file.")
+
+
+#Get steam info in XML format
 STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
 
 # ------- Database Connection --------
 
-def query_database(table):
+mydb = mysql.connector.connect(
+    host=DB_HOST,
+    user=DB_USERNAME,
+    password=DB_PASSWORD,
+    database="goontech"
+)
+
+#Database query function. Takes a table name and number of rows to return. Defaults to 2 rows.
+def query_database(table, rows=2):
 
     databaseResult = None
-
-    mydb = mysql.connector.connect(
-        host=DB_HOST,
-        user=DB_USERNAME,
-        password=DB_PASSWORD,
-        database="goontech"
-    )
 
     if mydb.is_connected():
         print("Connected to the database successfully!")
         mycursor = mydb.cursor()
 
         # Selects the most recent entry from the steam_data table
-        mycursor.execute(f"SELECT * FROM `{table}` ORDER BY `timestamp` DESC LIMIT 2")
+        mycursor.execute(f"SELECT * FROM `{table}` ORDER BY `timestamp` DESC LIMIT {rows}")
         databaseResult = mycursor.fetchall()
 
         if databaseResult:
@@ -167,11 +188,8 @@ def parse_xml_from_url_to_dict(STEAM_URL):
         print(f"Error parsing XML: {e}")
         return None
 
-# Example usage:
-# Replace with your actual XML file URL
-xml_url = STEAM_URL # Example URL
-
-parsed_data = parse_xml_from_url_to_dict(xml_url)
+# Parse the XML data from the Steam URL
+parsed_data = parse_xml_from_url_to_dict(STEAM_URL)
 
 if parsed_data:
     print("Successfully parsed Steam XML into dictionary!")
@@ -192,18 +210,32 @@ corpobs = requests.get("https://corporatebs-generator.sameerkumar.website/")
 async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=discord.CustomActivity(name=corpobs.json()["phrase"]))
 
+#Change the bot's status every minute to a random corporate buzzword phrase
 @discord.ext.tasks.loop(minutes=1)
 async def statuschange():
     await bot.change_presence(status=discord.Status.online, activity=discord.CustomActivity(name=corpobs.json()["phrase"]))
 
+#Shows an overview of the target user's Steam profile
 @bot.command()
 async def steam(ctx):
+
+    vrchatData = query_database("vrchat", 1)
+    steamvrData = query_database("steamvr", 1)
+
+
     embed = discord.Embed(title="Henry's VRChat Stats",
                       description=f"Status: `{parsed_data["profile"]["stateMessage"]}`",
                       colour=0xf50000)
 
     embed.set_author(name="SteamAPI")
 
+    embed.add_field(name="VRChat hours played",
+                    value=f"**{vrchatData[0][3]} Hours**\nLast updated: {vrchatData[0][4]} UTC",
+                    inline=False)
+    embed.add_field(name="SteamVR hours played",
+                    value=f"**{steamvrData[0][3]} Hours**\nLast updated: {steamvrData[0][4]} UTC",
+                    inline=False)
+    '''
     embed.add_field(name=parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["gameName"],
                     value=f"Hours Played: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["hoursPlayed"]}\nHours on Record: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["hoursOnRecord"]}",
                     inline=False)
@@ -219,6 +251,8 @@ async def steam(ctx):
     embed.add_field(name=parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][3]["gameName"],
                     value=f"Hours Played: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][3]["hoursPlayed"]}\nHours on Record: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][3]["hoursOnRecord"]}",
                     inline=False)
+    '''
+
 
     embed.set_image(url=parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["gameLogo"])
 
@@ -228,7 +262,7 @@ async def steam(ctx):
 
     await ctx.send(embed=embed)
 
-#Sends the most recent VRChat hours played to a locally hosted LLM API and posts the response to a Discord channel
+#Sends the most recent VRChat hours played to the LLM Server and posts a quippy response to the steamhours channel
 @bot.command()
 async def vrchathours(ctx):
 
@@ -250,6 +284,7 @@ async def vrchathours(ctx):
         # Send the message to the channel
         await channel.send(f"**Current Hours in '{gameName}': {latestHours}\nChange since last log: {delta} Hours**\n\n{llmResponse}")
 
+#Sends any message that mentions the bot to the LLM server and posts the response to the same channel
 @bot.event
 async def on_message(message):
    
