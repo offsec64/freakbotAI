@@ -52,7 +52,6 @@ STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
 
 # ------- Database Connection --------
 
-
 #Database query function. Takes a table name and number of rows to return. Defaults to 2 rows.
 def query_database(table, rows=2):
 
@@ -79,7 +78,7 @@ def query_database(table, rows=2):
     databaseResult = mycursor.fetchall()
 
     if databaseResult:
-        print("Most recent entry in steam_data:")
+        print(f"Most recent entry in {table}:")
         for row in databaseResult:
             print(row[3] + " Hours @ " + row[4] + " UTC")
     else:
@@ -238,26 +237,7 @@ async def steam(ctx):
                     value=f"**{steamvrData[0][3]} Hours**\nLast updated: {steamvrData[0][4]} UTC",
                     inline=False)
     
-    '''
-    embed.add_field(name=parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["gameName"],
-                    value=f"Hours Played: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["hoursPlayed"]}\nHours on Record: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["hoursOnRecord"]}",
-                    inline=False)
-    
-    embed.add_field(name=parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][1]["gameName"],
-                    value=f"Hours Played: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][1]["hoursPlayed"]}\nHours on Record: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][1]["hoursOnRecord"]}",
-                    inline=False)
-    
-    embed.add_field(name=parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][2]["gameName"],
-                    value=f"Hours Played: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][2]["hoursPlayed"]}\nHours on Record: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][2]["hoursOnRecord"]}",
-                    inline=False)
-    
-    embed.add_field(name=parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][3]["gameName"],
-                    value=f"Hours Played: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][3]["hoursPlayed"]}\nHours on Record: {parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][3]["hoursOnRecord"]}",
-                    inline=False)
-    '''
-
-
-    embed.set_image(url=parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["gameLogo"])
+    #embed.set_image(url=parsed_data["profile"]["mostPlayedGames"]["mostPlayedGame"][0]["gameLogo"])
 
     embed.set_thumbnail(url=parsed_data["profile"]["avatarIcon"])
 
