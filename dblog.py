@@ -86,7 +86,7 @@ if mydb.is_connected():
         create_table = f"CREATE TABLE IF NOT EXISTS {formatted_name} (id INT AUTO_INCREMENT PRIMARY KEY, steam_id VARCHAR(50) NOT NULL, game_name VARCHAR(50), hours VARCHAR(50) NOT NULL, timestamp VARCHAR(100) NOT NULL UNIQUE);"
         mycursor.execute(create_table)
 
-        insert_data = f"INSERT INTO {formatted_name}  " + "(hours, timestamp) VALUES (%s, %s, %s, %s)"
+        insert_data = f"INSERT INTO {formatted_name}  " + "(steam_id, game_name, hours, timestamp) VALUES (%s, %s, %s, %s)"
         val = (steam_id, game_name, hours, formatted_time)
 
        # sql="INSERT INTO steam_data (steamid, game_name, hours, timestamp) VALUES (%s, %s, %s, %s)"
