@@ -52,24 +52,26 @@ STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
 
 # ------- Database Connection --------
 
-mydb = mysql.connector.connect(
-    host=DB_HOST,
-    user=DB_USERNAME,
-    password=DB_PASSWORD,
-    database="goontech"
-)
-# Check if the database connection was successful
-if mydb.is_connected():
-    print("Connected to the database successfully!")
-else:
-    print("Failed to connect to the database.")
-    mydb.close()
-    raise ConnectionError("Could not connect to the MySQL database. Please check your credentials and network connection.")
 
 #Database query function. Takes a table name and number of rows to return. Defaults to 2 rows.
 def query_database(table, rows=2):
 
-    print("Connected to the database successfully!")
+    #Connect to the MySQL database
+    mydb = mysql.connector.connect(
+        host=DB_HOST,
+        user=DB_USERNAME,
+        password=DB_PASSWORD,
+        database="goontech"
+    )
+
+    # Check if the database connection was successful
+    if mydb.is_connected():
+        print("Connected to the database successfully!")
+    else:
+        print("Failed to connect to the database.")
+        mydb.close()
+        raise ConnectionError("Could not connect to the MySQL database. Please check your credentials and network connection.")
+
     mycursor = mydb.cursor()
 
     # Selects the most recent entry from the steam_data table
