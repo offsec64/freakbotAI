@@ -32,37 +32,42 @@ STEAM_URL="https://steamcommunity.com/id/Henry1981?xml=1"
 
 # ------- Database Connection --------
 
-databaseResult = None
+def query_database(table):
 
-mydb = mysql.connector.connect(
-    host=DB_HOST,
-    user=DB_USERNAME,
-    password=DB_PASSWORD,
-    database="goontech"
-)
+    databaseResult = None
 
-if mydb.is_connected():
-    print("Connected to the database successfully!")
-    mycursor = mydb.cursor()
+    mydb = mysql.connector.connect(
+        host=DB_HOST,
+        user=DB_USERNAME,
+        password=DB_PASSWORD,
+        database="goontech"
+    )
 
-    # Selects the most recent entry from the steam_data table
-    mycursor.execute("SELECT * FROM `steam_data` ORDER BY `timestamp` DESC LIMIT 2")
-    databaseResult = mycursor.fetchall()
+    if mydb.is_connected():
+        print("Connected to the database successfully!")
+        mycursor = mydb.cursor()
 
-    if databaseResult:
-        print("Most recent entry in steam_data:")
-        for row in databaseResult:
-            print(row[3] + " Hours @ " + row[4] + " UTC")
+        # Selects the most recent entry from the steam_data table
+        mycursor.execute(f"SELECT * FROM `{table}` ORDER BY `timestamp` DESC LIMIT 2")
+        databaseResult = mycursor.fetchall()
+
+        if databaseResult:
+            print("Most recent entry in steam_data:")
+            for row in databaseResult:
+                print(row[3] + " Hours @ " + row[4] + " UTC")
+        else:
+            print(f"No entries found in '{table}' table.")
+
+        mycursor.close()
+        mydb.close()
+
     else:
-        print("No entries found in steam_data table.")
+        print("Failed to connect to the database.")
+        mydb.close()
 
-    mycursor.close()
-    mydb.close()
+    return databaseResult
 
-else:
-    print("Failed to connect to the database.")
-    mydb.close()
-
+    
    # -------- LLM Query Functions -------- 
 
 system_prompt = "You are an AI assistant created by GoonSoft Technologies Corporation using their propriatary GoonTech API. " \
@@ -231,13 +236,8 @@ async def vrchathours(ctx):
 
     async with ctx.typing():
 
-        """
-        for row in result:
-            most_played_game = row[2]
-            hours = row[3]
-            timestamp = row[4]
-            msg = f"Most recent {most_played_game} hours: {hours} Logged at {timestamp} UTC"
-        """
+        databaseResult = query_database("vrchat")
+
         gameName = databaseResult[0][2]
         latestHours = int(databaseResult[0][3])
         previousHours = int(databaseResult[1][3])
