@@ -230,10 +230,10 @@ async def steam(ctx):
     embed.set_author(name="SteamAPI")
 
     embed.add_field(name="VRChat hours played",
-                    value=f"**{vrchatData[0][2]} Hours**\nLast updated: {vrchatData[3]} UTC",
+                    value=f"**{vrchatData[0][2]} Hours**\nLast updated: {vrchatData[0][3]} UTC",
                     inline=False)
     embed.add_field(name="SteamVR hours played",
-                    value=f"**{steamvrData[0][2]} Hours**\nLast updated: {steamvrData[3]} UTC",
+                    value=f"**{steamvrData[0][2]} Hours**\nLast updated: {steamvrData[0][3]} UTC",
                     inline=False)
     
     '''
