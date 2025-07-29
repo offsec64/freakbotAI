@@ -68,6 +68,10 @@ def send_ip_to_discord(ip, data, user_agent_raw, method):
 def render_page():
     return render_template("index.html")
 
+@app.route("/goon", methods=["GET"])
+def render_goon_page():
+    return render_template("goonIndex.html")
+
 @app.route("/reveal", methods=["POST"])
 def reveal_ip():
 
