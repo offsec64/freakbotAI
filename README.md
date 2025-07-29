@@ -1,6 +1,6 @@
 # FreakBotAI - Synergizing Marketable B2B Solutions for the Chronically Online
 
-"GoonSoft - Making technology fun again since 2025!"
+.....We shoud've used AI :(
 
 ## Getting Started:
 This project is currently configured to work best on Ubuntu Server 24.04.2 or higher 
